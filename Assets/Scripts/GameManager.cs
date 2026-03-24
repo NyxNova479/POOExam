@@ -3,19 +3,36 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using static Unity.VisualScripting.Metadata;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 public class GameManager : MonoBehaviour
 {
+
+    private static GameManager Instance;
+
+
+
+
+
+    public GameManager getInstance()
+    {
+        if(Instance == null)
+        {
+            Instance = new GameManager();
+        }
+        return Instance;
+    }
+
     [Header("Explosion")]
     public ExplosionManager explosionManager;
 
     // R�f�rence directe � tous les objets du jeu
-    public GameObject playerShip;
-    public GameObject enemyPrefab;
-    public GameObject asteroidPrefab;
-    public GameObject bulletPrefab;
-    public GameObject explosionPrefab;
-    public GameObject powerUpPrefab;
+    private GameObject playerShip;
+    private GameObject enemyPrefab;
+    private GameObject asteroidPrefab;
+    private GameObject bulletPrefab;
+    private GameObject explosionPrefab;
+    private GameObject powerUpPrefab;
 
     // Variables publiques expos�es sans encapsulation
     public int score;
@@ -59,20 +76,21 @@ public class GameManager : MonoBehaviour
     private float restartCountdown = 3.0f;
     public TMPro.TMP_Text countdownText;
 
+
     // Avant de remplacer le syst�me de collisions, il faut cr�er des classes pour g�rer les collisions
     // Ces classes seront attach�es aux objets du jeu concern�s
 
     // Voici les scripts � cr�er pour le syst�me de trigger/collision Unity
     // Note pour les �tudiants : Ces scripts devraient �tre dans des fichiers s�par�s pour respecter les principes SOLID
 
-    
 
-   
 
-   
 
-   
-    
+
+
+
+
+
 
     // M�thode pour g�rer les collisions avec le joueur
     public void HandlePlayerHit(GameObject hitObject)

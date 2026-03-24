@@ -12,7 +12,7 @@ public class PlayerShip : MonoBehaviour
     void Start()
     {
         // Recherche du GameManager dans la scène
-        gameManager = FindObjectOfType<GameManager>();
+        gameManager = FindFirstObjectByType<GameManager>();
 
         // Initialisation des variables
         speed = gameManager.playerSpeed;

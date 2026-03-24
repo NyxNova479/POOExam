@@ -20,6 +20,6 @@ public class Tourne : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.RotateAroundLocal(dir, vitesse);
+        transform.Rotate(dir, vitesse);
     }
 }

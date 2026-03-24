@@ -7,7 +7,7 @@ public class PlayerCollider : MonoBehaviour
 
     void Start()
     {
-        gameManager = FindObjectOfType<GameManager>();
+        gameManager = FindFirstObjectByType<GameManager>();
     }
 
     // Utilisons OnCollisionEnter au lieu de OnTriggerEnter
