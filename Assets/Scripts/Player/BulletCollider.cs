@@ -1,4 +1,4 @@
-// Script pour les projectiles
+ï»¿// Script pour les projectiles
 using UnityEngine;
 
 public class BulletCollider : EntityColider
@@ -19,7 +19,7 @@ public class BulletCollider : EntityColider
             gameManager.HandleBulletEnemyCollision(gameObject, collision.gameObject);
             gameManager.score += 100;
 
-            // Chance de générer un power-up
+            // Chance de gÃ©nÃ©rer un power-up
             if (Random.value < 0.5f)
             {
                 gameManager.SpawnPowerUp(collision.transform.position);
@@ -27,9 +27,31 @@ public class BulletCollider : EntityColider
         }
         else if (collision.gameObject.CompareTag("Asteroid"))
         {
-            // Balle touche astéroïde
+            // Balle touche astÃ©roÃ¯de
             gameManager.HandleBulletEnemyCollision(gameObject, collision.gameObject);
             gameManager.score += 50;
         }
+    }
+
+    public void HandleBulletEnemyCollision(GameObject bullet, GameObject enemy)
+    {
+        // Explosion avec effet de fragmentation
+        if (explosionManager != null)
+        {
+            explosionManager.ExplodeObject(enemy);
+        }
+        else
+        {
+            // Fallback vers l'explosion originale
+            Instantiate(explosionPrefab, enemy.transform.position, Quaternion.identity);
+        }
+
+        // Destruction de l'ennemi
+        Destroy(enemy, 0.1f); // Court dï¿½lai pour permettre ï¿½ l'explosion de commencer
+        dangers.Remove(enemy.GetComponent<Dangers>());
+
+        // Destruction de la balle
+        Destroy(bullet);
+        lBullets.Remove(bullet.GetComponent<Bullets>());
     }
 }
