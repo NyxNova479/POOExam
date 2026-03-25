@@ -12,6 +12,32 @@ public class EnemyCollider : Enemy
         MoveEnemies();
     }
 
+    public override void Spawn()
+    {
+        if (Time.time > nextSpawnTime)
+        {
+            if (Random.value < 0.3f)
+            {
+                // Spawn d'un ennemi
+                float randomX = Random.Range(-8f, 8f);
+                // Position de spawn sur l'axe Z au lieu de Y
+                Vector3 spawnPosition = new Vector3(randomX, 0, 9);
+                GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+
+                // Configuration des composants de collision pour l'ennemi
+                SetupCollisionComponents(enemy, true, false, "Enemy");
+
+                // Ajouter le script de gestion de collision � l'ennemi
+                enemy.AddComponent<EnemyCollider>();
+
+                enemies.Add(enemy);
+            }
+
+            nextSpawnTime = Time.time + spawnRate;
+        }
+
+    }
+
     protected void MoveEnemies()
     {
         {

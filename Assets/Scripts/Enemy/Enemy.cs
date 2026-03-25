@@ -3,10 +3,31 @@
 public abstract class Enemy : Entity, IMovable, ISpawnable
 {
     protected GameManager gameManager;
+
+    protected float spawnRate = 2.0f;
+
+
+    [Header("Difficulty Settings")]
     protected float initialSpawnRate = 2.0f; // Taux de spawn initial
+    protected float minSpawnRate = 0.5f; // Taux de spawn minimal (plus difficile)
+    protected float spawnRateDifficulty = 0.1f; // R�duction du taux de spawn par minute
+
+    // Variables pour le timing
+    protected float nextSpawnTime;
+
     void Start()
     {
         gameManager = FindFirstObjectByType<GameManager>();
+        spawnRate = initialSpawnRate;
+        nextSpawnTime = Time.time + spawnRate;
+    }
+
+    private void Update()
+    {
+        float gameTime = gameManager.getGameTime();
+
+        float minutesPlayed = gameTime / 2f;
+        spawnRate = Mathf.Max(minSpawnRate, initialSpawnRate - (spawnRateDifficulty * minutesPlayed));
     }
 
     // Utilisons OnCollisionEnter au lieu de OnTriggerEnter
@@ -26,46 +47,10 @@ public abstract class Enemy : Entity, IMovable, ISpawnable
         Move();
     }
 
-    public void abstract void Spawn()
-    {
-        if (Time.time > nextSpawnTime)
-        {
-            if (Random.value < 0.3f)
-            {
-                // Spawn d'un ennemi
-                float randomX = Random.Range(-8f, 8f);
-                // Position de spawn sur l'axe Z au lieu de Y
-                Vector3 spawnPosition = new Vector3(randomX, 0, 9);
-                GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+    public abstract void Spawn();
+    
 
-                // Configuration des composants de collision pour l'ennemi
-                SetupCollisionComponents(enemy, true, false, "Enemy");
-
-                // Ajouter le script de gestion de collision � l'ennemi
-                enemy.AddComponent<EnemyCollider>();
-
-                enemies.Add(enemy);
-            }
-            else
-            {
-                // Spawn d'un ast�ro�de
-                float randomX = Random.Range(-8f, 8f);
-                // Position de spawn sur l'axe Z au lieu de Y
-                Vector3 spawnPosition = new Vector3(randomX, 0, 9);
-                GameObject asteroid = Instantiate(asteroidPrefab, spawnPosition, Quaternion.identity);
-
-                // Configuration des composants de collision pour l'ast�ro�de
-                SetupCollisionComponents(asteroid, true, false, "Asteroid");
-
-                // Ajouter le script de gestion de collision � l'ast�ro�de
-                asteroid.AddComponent<AsteroidCollider>();
-
-                asteroids.Add(asteroid);
-            }
-
-            nextSpawnTime = Time.time + spawnRate;
-        }
-    }
+    
 
     public void beSpawned(GameManager gameManager)
     {

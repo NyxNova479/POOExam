@@ -12,6 +12,31 @@ public class AsteroidCollider : Enemy
         MoveAsteroids();
     }
 
+    public override void Spawn()
+    {
+        if (Time.time > nextSpawnTime)
+        {
+
+            if (Random.value >= 0.3f)
+            {
+                // Spawn d'un ast�ro�de
+                float randomX = Random.Range(-8f, 8f);
+                // Position de spawn sur l'axe Z au lieu de Y
+                Vector3 spawnPosition = new Vector3(randomX, 0, 9);
+                GameObject asteroid = Instantiate(asteroidPrefab, spawnPosition, Quaternion.identity);
+
+                // Configuration des composants de collision pour l'ast�ro�de
+                SetupCollisionComponents(asteroid, true, false, "Asteroid");
+
+                // Ajouter le script de gestion de collision � l'ast�ro�de
+                asteroid.AddComponent<AsteroidCollider>();
+
+                asteroids.Add(asteroid);
+            }
+            nextSpawnTime = Time.time + spawnRate;
+        }
+    }
+
     protected void MoveAsteroids()
     {
         for (int i = asteroids.Count - 1; i >= 0; i--)
@@ -68,4 +93,6 @@ public class AsteroidCollider : Enemy
             }
         }
     }
+
+
 }

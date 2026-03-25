@@ -55,6 +55,11 @@ public class GameManager : MonoBehaviour
     public float spawnRateDifficulty = 0.1f; // R�duction du taux de spawn par minute
     private float gameTime = 0f; // Temps de jeu �coul�
 
+    public float getGameTime()
+    {
+        return gameTime;
+    }
+
     // Listes pour suivre tous les objets du jeu
     private List<Enemy> enemies = new List<Enemy>();
     private List<Enemy> asteroids = new List<Enemy>();
@@ -69,6 +74,7 @@ public class GameManager : MonoBehaviour
 
     // Variables pour le timing
     private float nextSpawnTime;
+
 
     // UI references
     public TMPro.TMP_Text scoreText;
