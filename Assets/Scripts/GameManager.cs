@@ -56,10 +56,16 @@ public class GameManager : MonoBehaviour
     private float gameTime = 0f; // Temps de jeu �coul�
 
     // Listes pour suivre tous les objets du jeu
-    private List<GameObject> enemies = new List<GameObject>();
-    private List<GameObject> asteroids = new List<GameObject>();
+    private List<Enemy> enemies = new List<Enemy>();
+    private List<Enemy> asteroids = new List<Enemy>();
     private List<GameObject> bullets = new List<GameObject>();
     public List<GameObject> powerUps = new List<GameObject>();
+
+
+    public List<Enemy> getEnemies()
+    {
+        return enemies;
+    }
 
     // Variables pour le timing
     private float nextSpawnTime;
