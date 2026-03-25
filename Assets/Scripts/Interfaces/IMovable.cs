@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IMovable
 {
-    public void beMoved();
+    public void beMoved(GameManager gameManager);
 }

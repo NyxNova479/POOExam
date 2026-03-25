@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using NUnit.Framework;
+using UnityEngine;
+using System.Collections.Generic;
+
 
 public class Enemy : Dangers, IColidable
 {
@@ -11,9 +14,9 @@ public class Enemy : Dangers, IColidable
         throw new System.NotImplementedException();
     }
 
-    public override void Move()
+    public override void Move(List<Dangers> dangers)
     {
-        MoveEnemies();
+        MoveEnemies(dangers);
     }
 
     public override void Spawn()
@@ -34,7 +37,7 @@ public class Enemy : Dangers, IColidable
                 // Ajouter le script de gestion de collision � l'ennemi
                 enemy.AddComponent<EnemyCollider>();
 
-                gameManager.Enemies.Add(enemy);
+                gameManager.lDangers.Add(enemy.GetComponent<Enemy>());
             }
 
             nextSpawnTime = Time.time + spawnRate;
@@ -42,7 +45,7 @@ public class Enemy : Dangers, IColidable
 
     }
 
-    protected void MoveEnemies()
+    protected void MoveEnemies(List<Dangers> enemies)
     {
         {
             for (int i = enemies.Count - 1; i >= 0; i--)

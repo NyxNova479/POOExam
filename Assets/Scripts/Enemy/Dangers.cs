@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using NUnit.Framework;
+using UnityEngine;
+using System.Collections.Generic;
 
 public abstract class Dangers : Entity, IMovable, ISpawnable
 {
@@ -40,11 +42,11 @@ public abstract class Dangers : Entity, IMovable, ISpawnable
         }
     }
 
-    public abstract void Move();
+    public abstract void Move(List<Dangers> dangers);
 
-    public void beMoved()
+    public void beMoved(GameManager gameManager)
     {
-        Move();
+        Move(gameManager.lDangers);
     }
 
     public abstract void Spawn();

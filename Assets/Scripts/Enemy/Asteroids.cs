@@ -1,14 +1,16 @@
-﻿using UnityEngine;
+﻿using NUnit.Framework;
+using UnityEngine;
+using System.Collections.Generic;
 
-public class Asteroids : MonoBehaviour
+public class Asteroids : Dangers
 {
     private GameObject asteroidPrefab;
 
     private float asteroidSpeed = 2.0f;
 
-    public override void Move()
+    public override void Move(List<Dangers> dangers)
     {
-        MoveAsteroids();
+        MoveAsteroids(dangers);
     }
 
     public override void Spawn()
@@ -30,13 +32,13 @@ public class Asteroids : MonoBehaviour
                 // Ajouter le script de gestion de collision � l'ast�ro�de
                 asteroid.AddComponent<AsteroidCollider>();
 
-                asteroids.Add(asteroid);
+                gameManager.lDangers.Add(asteroid.GetComponent<Asteroids>());
             }
             nextSpawnTime = Time.time + spawnRate;
         }
     }
 
-    protected void MoveAsteroids()
+    protected void MoveAsteroids(List<Dangers> asteroids)
     {
         for (int i = asteroids.Count - 1; i >= 0; i--)
         {
