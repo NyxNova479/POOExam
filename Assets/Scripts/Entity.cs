@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public class Entity : MonoBehaviour
+public abstract class Entity : MonoBehaviour
 {
-    protected void DestroyObject()
+
+    public void DestroyObject()
     {
         if (gameObject == null) return;
         Destroy(this.gameObject);

@@ -113,12 +113,13 @@ public class GameManager : MonoBehaviour
 
         if (hitObject.CompareTag("Enemy"))
         {
-            Destroy(hitObject);
+            //Destroy(hitObject);
+
             enemies.Remove(hitObject);
         }
         else if (hitObject.CompareTag("Asteroid"))
         {
-            Destroy(hitObject);
+           // Destroy(hitObject);
             asteroids.Remove(hitObject);
         }
 
@@ -403,47 +404,47 @@ public class GameManager : MonoBehaviour
             if (asteroids[i] != null)
             {
                 // Direction al�atoire pour chaque ast�ro�de
-                float randomX = Random.Range(-0.5f, 0.5f);
+                float randomX = Random.Range(-0.5f, 0.5f); //////////////////////////////////////////////////////////////// on peut calculer ca en input de la fonction
 
                 // Utiliser le Rigidbody pour le mouvement
                 Rigidbody rb = asteroids[i].GetComponent<Rigidbody>();
                 if (rb != null)
                 {
                     // Appliquer directement une v�locit� au Rigidbody
-                    rb.linearVelocity = new Vector3(randomX, 0, -1) * asteroidSpeed;
+                    rb.linearVelocity = new Vector3(randomX, 0, -1) * asteroidSpeed; ///////////////////////////////////////////////// on peut calculer ca en input de la fonction
 
                     // Appliquer une rotation
-                    asteroids[i].transform.Rotate(0, 30 * Time.deltaTime, 0);
+                    asteroids[i].transform.Rotate(0, 30 * Time.deltaTime, 0); /////////////////////////////////////////////////////////
                 }
                 else
                 {
                     // Fallback au mouvement par transform si pas de Rigidbody
-                    Vector3 movement = new Vector3(randomX, 0, -1) * asteroidSpeed * Time.deltaTime;
-                    asteroids[i].transform.position += movement;
-                    asteroids[i].transform.Rotate(0, 30 * Time.deltaTime, 0);
+                    Vector3 movement = new Vector3(randomX, 0, -1) * asteroidSpeed * Time.deltaTime; ////////////////////////////////////
+                    asteroids[i].transform.position += movement;////////////////////////////////////////
+                    asteroids[i].transform.Rotate(0, 30 * Time.deltaTime, 0);////////////////////////////////////////////////////
                 }
 
                 // Les ast�ro�des ne disparaissent qu'� z=-12 et enl�vent une vie
-                if (asteroids[i].transform.position.z < -12)
+                if (CheckIfEnemyIsUnder12(asteroids[i]))//(asteroids[i].transform.position.z < -12)
                 {
-                    // Enlever un point de vie au joueur
+                    /*// Enlever un point de vie au joueur
                     lives--;
 
                     // Effet visuel pour montrer que l'ast�ro�de a travers�
                     if (playerDamageEffect != null)
                     {
                         Instantiate(playerDamageEffect, asteroids[i].transform.position, Quaternion.identity);
-                    }
+                    }*/
 
                     // Destruction de l'ast�ro�de
-                    Destroy(asteroids[i]);
+                    //Destroy(asteroids[i]); ////////////// appeler le destroy de entity
                     asteroids.RemoveAt(i);
 
                     // V�rifier si le joueur n'a plus de vies
-                    if (lives <= 0)
+                    /*if (lives <= 0)
                     {
                         GameOver();
-                    }
+                    }*/
                 }
             }
             else
@@ -451,6 +452,26 @@ public class GameManager : MonoBehaviour
                 asteroids.RemoveAt(i);
             }
         }
+    }
+
+    bool CheckIfEnemyIsUnder12(Enemy entity)
+    {
+        if (entity.transform.position.z > -12f) return false;
+
+        // Enlever un point de vie au joueur
+        lives--;
+
+        // Effet visuel pour montrer que l'ast�ro�de a travers�
+        if (playerDamageEffect != null)
+        {
+            Instantiate(playerDamageEffect, entity.transform.position, Quaternion.identity);
+        }
+        entity.DestroyObject();
+        if (lives <= 0)
+        {
+            GameOver();
+        }
+        return true;
     }
 
     void MoveBullets()
