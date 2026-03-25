@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     public ExplosionManager explosionManager;
 
     // R�f�rence directe � tous les objets du jeu
-    private GameObject playerShip;
+
     private GameObject explosionPrefab;
     private GameObject powerUpPrefab;
 
