@@ -1,59 +1,95 @@
 ﻿using UnityEngine;
 
-public abstract class Enemy : Entity, IMovable, ISpawnable
+public class Enemy : Dangers, IColidable
 {
-    protected GameManager gameManager;
+    private GameObject enemyPrefab;
 
-    protected float spawnRate = 2.0f;
+    private float enemySpeed = 3.0f;
 
-
-    [Header("Difficulty Settings")]
-    protected float initialSpawnRate = 2.0f; // Taux de spawn initial
-    protected float minSpawnRate = 0.5f; // Taux de spawn minimal (plus difficile)
-    protected float spawnRateDifficulty = 0.1f; // R�duction du taux de spawn par minute
-
-    // Variables pour le timing
-    protected float nextSpawnTime;
-
-    void Start()
+    public void collide(PlayerCollider player)
     {
-        gameManager = FindFirstObjectByType<GameManager>();
-        spawnRate = initialSpawnRate;
-        nextSpawnTime = Time.time + spawnRate;
+        throw new System.NotImplementedException();
     }
 
-    private void Update()
+    public override void Move()
     {
-        float gameTime = gameManager.getGameTime();
-
-        float minutesPlayed = gameTime / 2f;
-        spawnRate = Mathf.Max(minSpawnRate, initialSpawnRate - (spawnRateDifficulty * minutesPlayed));
+        MoveEnemies();
     }
 
-    // Utilisons OnCollisionEnter au lieu de OnTriggerEnter
-    void OnCollisionEnter(Collision collision)
+    public override void Spawn()
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (Time.time > nextSpawnTime)
         {
-            // Le joueur a touché un enemy
-            gameManager.HandlePlayerHit(gameObject);
+            if (Random.value < 0.3f)
+            {
+                // Spawn d'un ennemi
+                float randomX = Random.Range(-8f, 8f);
+                // Position de spawn sur l'axe Z au lieu de Y
+                Vector3 spawnPosition = new Vector3(randomX, 0, 9);
+                GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+
+                // Configuration des composants de collision pour l'ennemi
+                SetupCollisionComponents(enemy, true, false, "Enemy");
+
+                // Ajouter le script de gestion de collision � l'ennemi
+                enemy.AddComponent<EnemyCollider>();
+
+                gameManager.Enemies.Add(enemy);
+            }
+
+            nextSpawnTime = Time.time + spawnRate;
         }
+
     }
 
-    public abstract void Move();
-
-    public void beMoved()
+    protected void MoveEnemies()
     {
-        Move();
-    }
+        {
+            for (int i = enemies.Count - 1; i >= 0; i--)
+            {
+                if (enemies[i] != null)
+                {
+                    // Utiliser le Rigidbody pour le mouvement
+                    Rigidbody rb = enemies[i].GetComponent<Rigidbody>();
+                    if (rb != null)
+                    {
+                        // Appliquer directement une v�locit� au Rigidbody
+                        rb.linearVelocity = Vector3.back * enemySpeed;
+                    }
+                    else
+                    {
+                        // Fallback au mouvement par transform si pas de Rigidbody
+                        enemies[i].transform.position += Vector3.back * enemySpeed * Time.deltaTime;
+                    }
 
-    public abstract void Spawn();
-    
+                    // Les ennemis ne disparaissent qu'� z=-12 et enl�vent une vie
+                    if (enemies[i].transform.position.z < -12)
+                    {
+                        // Enlever un point de vie au joueur
+                        lives--;
 
-    
+                        // Effet visuel pour montrer que l'ennemi a travers�
+                        if (playerDamageEffect != null)
+                        {
+                            Instantiate(playerDamageEffect, enemies[i].transform.position, Quaternion.identity);
+                        }
 
-    public void beSpawned(GameManager gameManager)
-    {
-        Spawn();
+                        // Destruction de l'ennemi
+                        Destroy(enemies[i]);
+                        enemies.RemoveAt(i);
+
+                        // V�rifier si le joueur n'a plus de vies
+                        if (lives <= 0)
+                        {
+                            GameOver();
+                        }
+                    }
+                }
+                else
+                {
+                    enemies.RemoveAt(i);
+                }
+            }
+        }
     }
 }

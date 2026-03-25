@@ -62,15 +62,15 @@ public class GameManager : MonoBehaviour
     }
 
     // Listes pour suivre tous les objets du jeu
-    private List<Enemy> enemies = new List<Enemy>();
-    private List<Enemy> asteroids = new List<Enemy>();
+    private List<Dangers> enemies = new List<Dangers>();
+    private List<Dangers> asteroids = new List<Dangers>();
     private List<GameObject> bullets = new List<GameObject>();
     public List<GameObject> powerUps = new List<GameObject>();
 
 
-    public List<Enemy> getEnemies()
+    public List<Dangers> getEnemies()
     {
-        return enemies;
+        return Enemies;
     }
 
     // Variables pour le timing
@@ -88,6 +88,9 @@ public class GameManager : MonoBehaviour
     private bool isGameOver = false;
     private float restartCountdown = 3.0f;
     public TMPro.TMP_Text countdownText;
+
+    public List<Dangers> Enemies { get => enemies; set => enemies = value; }
+    public List<Dangers> Asteroids { get => asteroids; set => asteroids = value; }
 
 
     // Avant de remplacer le syst�me de collisions, il faut cr�er des classes pour g�rer les collisions
@@ -114,12 +117,12 @@ public class GameManager : MonoBehaviour
         if (hitObject.CompareTag("Enemy"))
         {
             Destroy(hitObject);
-            enemies.Remove(hitObject);
+            Enemies.Remove(hitObject);
         }
         else if (hitObject.CompareTag("Asteroid"))
         {
             Destroy(hitObject);
-            asteroids.Remove(hitObject);
+            Asteroids.Remove(hitObject);
         }
 
         // Perte d'une vie
@@ -211,7 +214,7 @@ public class GameManager : MonoBehaviour
 
         // Destruction de l'ennemi
         Destroy(enemy, 0.1f); // Court d�lai pour permettre � l'explosion de commencer
-        enemies.Remove(enemy);
+        Enemies.Remove(enemy);
 
         // Destruction de la balle
         Destroy(bullet);
@@ -349,12 +352,12 @@ public class GameManager : MonoBehaviour
 
     void MoveEnemies()
     {
-        for (int i = enemies.Count - 1; i >= 0; i--)
+        for (int i = Enemies.Count - 1; i >= 0; i--)
         {
-            if (enemies[i] != null)
+            if (Enemies[i] != null)
             {
                 // Utiliser le Rigidbody pour le mouvement
-                Rigidbody rb = enemies[i].GetComponent<Rigidbody>();
+                Rigidbody rb = Enemies[i].GetComponent<Rigidbody>();
                 if (rb != null)
                 {
                     // Appliquer directement une v�locit� au Rigidbody
@@ -363,11 +366,11 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     // Fallback au mouvement par transform si pas de Rigidbody
-                    enemies[i].transform.position += Vector3.back * enemySpeed * Time.deltaTime;
+                    Enemies[i].transform.position += Vector3.back * enemySpeed * Time.deltaTime;
                 }
 
                 // Les ennemis ne disparaissent qu'� z=-12 et enl�vent une vie
-                if (enemies[i].transform.position.z < -12)
+                if (Enemies[i].transform.position.z < -12)
                 {
                     // Enlever un point de vie au joueur
                     lives--;
@@ -375,12 +378,12 @@ public class GameManager : MonoBehaviour
                     // Effet visuel pour montrer que l'ennemi a travers�
                     if (playerDamageEffect != null)
                     {
-                        Instantiate(playerDamageEffect, enemies[i].transform.position, Quaternion.identity);
+                        Instantiate(playerDamageEffect, Enemies[i].transform.position, Quaternion.identity);
                     }
 
                     // Destruction de l'ennemi
-                    Destroy(enemies[i]);
-                    enemies.RemoveAt(i);
+                    Destroy(Enemies[i]);
+                    Enemies.RemoveAt(i);
 
                     // V�rifier si le joueur n'a plus de vies
                     if (lives <= 0)
@@ -391,40 +394,40 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                enemies.RemoveAt(i);
+                Enemies.RemoveAt(i);
             }
         }
     }
 
     void MoveAsteroids()
     {
-        for (int i = asteroids.Count - 1; i >= 0; i--)
+        for (int i = Asteroids.Count - 1; i >= 0; i--)
         {
-            if (asteroids[i] != null)
+            if (Asteroids[i] != null)
             {
                 // Direction al�atoire pour chaque ast�ro�de
                 float randomX = Random.Range(-0.5f, 0.5f);
 
                 // Utiliser le Rigidbody pour le mouvement
-                Rigidbody rb = asteroids[i].GetComponent<Rigidbody>();
+                Rigidbody rb = Asteroids[i].GetComponent<Rigidbody>();
                 if (rb != null)
                 {
                     // Appliquer directement une v�locit� au Rigidbody
                     rb.linearVelocity = new Vector3(randomX, 0, -1) * asteroidSpeed;
 
                     // Appliquer une rotation
-                    asteroids[i].transform.Rotate(0, 30 * Time.deltaTime, 0);
+                    Asteroids[i].transform.Rotate(0, 30 * Time.deltaTime, 0);
                 }
                 else
                 {
                     // Fallback au mouvement par transform si pas de Rigidbody
                     Vector3 movement = new Vector3(randomX, 0, -1) * asteroidSpeed * Time.deltaTime;
-                    asteroids[i].transform.position += movement;
-                    asteroids[i].transform.Rotate(0, 30 * Time.deltaTime, 0);
+                    Asteroids[i].transform.position += movement;
+                    Asteroids[i].transform.Rotate(0, 30 * Time.deltaTime, 0);
                 }
 
                 // Les ast�ro�des ne disparaissent qu'� z=-12 et enl�vent une vie
-                if (asteroids[i].transform.position.z < -12)
+                if (Asteroids[i].transform.position.z < -12)
                 {
                     // Enlever un point de vie au joueur
                     lives--;
@@ -432,12 +435,12 @@ public class GameManager : MonoBehaviour
                     // Effet visuel pour montrer que l'ast�ro�de a travers�
                     if (playerDamageEffect != null)
                     {
-                        Instantiate(playerDamageEffect, asteroids[i].transform.position, Quaternion.identity);
+                        Instantiate(playerDamageEffect, Asteroids[i].transform.position, Quaternion.identity);
                     }
 
                     // Destruction de l'ast�ro�de
-                    Destroy(asteroids[i]);
-                    asteroids.RemoveAt(i);
+                    Destroy(Asteroids[i]);
+                    Asteroids.RemoveAt(i);
 
                     // V�rifier si le joueur n'a plus de vies
                     if (lives <= 0)
@@ -448,7 +451,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                asteroids.RemoveAt(i);
+                Asteroids.RemoveAt(i);
             }
         }
     }
@@ -504,7 +507,7 @@ public class GameManager : MonoBehaviour
                 // Ajouter le script de gestion de collision � l'ennemi
                 enemy.AddComponent<EnemyCollider>();
 
-                enemies.Add(enemy);
+                Enemies.Add(enemy);
             }
             else
             {
@@ -520,7 +523,7 @@ public class GameManager : MonoBehaviour
                 // Ajouter le script de gestion de collision � l'ast�ro�de
                 asteroid.AddComponent<AsteroidCollider>();
 
-                asteroids.Add(asteroid);
+                Asteroids.Add(asteroid);
             }
 
             nextSpawnTime = Time.time + spawnRate;
@@ -620,17 +623,17 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
 
         // Destruction de tous les objets
-        foreach (GameObject enemy in enemies)
+        foreach (GameObject enemy in Enemies)
         {
             Destroy(enemy);
         }
-        enemies.Clear();
+        Enemies.Clear();
 
-        foreach (GameObject asteroid in asteroids)
+        foreach (GameObject asteroid in Asteroids)
         {
             Destroy(asteroid);
         }
-        asteroids.Clear();
+        Asteroids.Clear();
 
         foreach (GameObject bullet in bullets)
         {
