@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class Enemy : Dangers, IColidable
 {
-    private GameObject enemyPrefab;
+    [SerializeField] private GameObject enemyPrefab;
 
     private float enemySpeed = 3.0f;
 

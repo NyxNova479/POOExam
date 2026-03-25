@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public class PlayerShip : MonoBehaviour
+public class PlayerShip : Entity
 {
     // Références au GameManager pour accéder aux données
     private GameManager gameManager;
 
     // Variables dupliquées qui créent des dépendances
-    public float speed;
-    public int lives;
+    protected float speed;
+    protected int lives;
 
     void Start()
     {
@@ -25,4 +25,6 @@ public class PlayerShip : MonoBehaviour
         speed = gameManager.playerSpeed;
         lives = gameManager.lives;
     }
+
+
 }

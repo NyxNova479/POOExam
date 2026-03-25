@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
-
+    protected GameManager gameManager;
 
     protected void DestroyObject()
     {

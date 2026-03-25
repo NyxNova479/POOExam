@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public abstract class Dangers : Entity, IMovable, ISpawnable
 {
-    protected GameManager gameManager;
+
 
     protected float spawnRate = 2.0f;
 
@@ -17,9 +17,15 @@ public abstract class Dangers : Entity, IMovable, ISpawnable
     // Variables pour le timing
     protected float nextSpawnTime;
 
+
+    public float getInitialSpawnRate()
+    {
+        return initialSpawnRate;
+    }
+
     void Start()
     {
-        gameManager = FindFirstObjectByType<GameManager>();
+        gameManager = gameManager.getInstance();
         spawnRate = initialSpawnRate;
         nextSpawnTime = Time.time + spawnRate;
     }
@@ -32,15 +38,6 @@ public abstract class Dangers : Entity, IMovable, ISpawnable
         spawnRate = Mathf.Max(minSpawnRate, initialSpawnRate - (spawnRateDifficulty * minutesPlayed));
     }
 
-    // Utilisons OnCollisionEnter au lieu de OnTriggerEnter
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            // Le joueur a touché un enemy
-            gameManager.HandlePlayerHit(gameObject);
-        }
-    }
 
     public abstract void Move(List<Dangers> dangers);
 
@@ -51,6 +48,15 @@ public abstract class Dangers : Entity, IMovable, ISpawnable
 
     public abstract void Spawn();
     
+    // Utilisons OnCollisionEnter au lieu de OnTriggerEnter
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            // Le joueur a touché un enemy
+            gameManager.HandlePlayerHit(gameObject);
+        }
+    }
 
     
 

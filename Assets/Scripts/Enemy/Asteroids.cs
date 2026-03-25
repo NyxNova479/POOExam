@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Asteroids : Dangers
 {
-    private GameObject asteroidPrefab;
+    [SerializeField] private GameObject asteroidPrefab;
 
     private float asteroidSpeed = 2.0f;
 

@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
         return Instance;
     }
 
+    private Dangers danger;
+
     private ISpawnable spawnable;
     private IMovable movable;
 
@@ -29,9 +31,6 @@ public class GameManager : MonoBehaviour
 
     // R�f�rence directe � tous les objets du jeu
     private GameObject playerShip;
-    private GameObject enemyPrefab;
-    private GameObject asteroidPrefab;
-    private GameObject bulletPrefab;
     private GameObject explosionPrefab;
     private GameObject powerUpPrefab;
 
@@ -50,10 +49,7 @@ public class GameManager : MonoBehaviour
     public float bulletSpacing = 0.5f; // Espacement horizontal entre les projectiles
     public int maxBulletCount = 5; // Limite maximale de projectiles simultan�s
 
-    [Header("Difficulty Settings")]
-    public float initialSpawnRate = 2.0f; // Taux de spawn initial
-    public float minSpawnRate = 0.5f; // Taux de spawn minimal (plus difficile)
-    public float spawnRateDifficulty = 0.1f; // R�duction du taux de spawn par minute
+
     private float gameTime = 0f; // Temps de jeu �coul�
 
     public float getGameTime()
@@ -63,9 +59,7 @@ public class GameManager : MonoBehaviour
 
     // Listes pour suivre tous les objets du jeu
     private List<Dangers> dangers = new List<Dangers>();
-    private List<Dangers> enemies = new List<Dangers>();
-    private List<Dangers> asteroids = new List<Dangers>();
-    private List<GameObject> bullets = new List<GameObject>();
+    private List<Bullets> bullets = new List<Bullets>();
     public List<GameObject> powerUps = new List<GameObject>();
 
 
@@ -88,6 +82,7 @@ public class GameManager : MonoBehaviour
     public TMPro.TMP_Text countdownText;
 
     public List<Dangers> lDangers { get => dangers; set => dangers = value; }
+    public List<Bullets> lBullets { get => bullets; set => bullets = value; }
 
 
     // Avant de remplacer le syst�me de collisions, il faut cr�er des classes pour g�rer les collisions
@@ -114,12 +109,12 @@ public class GameManager : MonoBehaviour
         if (hitObject.CompareTag("Enemy"))
         {
             Destroy(hitObject);
-            lEnemies.Remove(hitObject);
+            lDangers.Remove(hitObject.GetComponent<Dangers>());
         }
         else if (hitObject.CompareTag("Asteroid"))
         {
             Destroy(hitObject);
-            Asteroids.Remove(hitObject);
+            lDangers.Remove(hitObject.GetComponent<Dangers>());
         }
 
         // Perte d'une vie
@@ -136,10 +131,10 @@ public class GameManager : MonoBehaviour
         // Initialisation
         score = 0;
         lives = 3;
-        bulletCount = 1;
+
         gameTime = 0f;
-        spawnRate = initialSpawnRate;
-        nextSpawnTime = Time.time + spawnRate;
+
+
         UpdateUI();
         if (gameOverPanel) gameOverPanel.SetActive(false);
         if (powerupMessageText) powerupMessageText.gameObject.SetActive(false);
@@ -215,7 +210,7 @@ public class GameManager : MonoBehaviour
 
         // Destruction de la balle
         Destroy(bullet);
-        bullets.Remove(bullet);
+        lBullets.Remove(bullet.GetComponent<Bullets>());
     }
 
     void Update()
@@ -225,9 +220,7 @@ public class GameManager : MonoBehaviour
             // Augmentation du temps de jeu
             gameTime += Time.deltaTime;
 
-            // Calcul du nouveau taux de spawn en fonction du temps �coul� (en minutes)
-            float minutesPlayed = gameTime / 2f;
-            spawnRate = Mathf.Max(minSpawnRate, initialSpawnRate - (spawnRateDifficulty * minutesPlayed));
+
 
             // Affichage du temps de jeu (optionnel)
             if (timeText != null)
@@ -334,7 +327,7 @@ public class GameManager : MonoBehaviour
             // Ajouter le script de gestion de collision � la balle
             bullet.AddComponent<BulletCollider>();
 
-            bullets.Add(bullet);
+            lBullets.Add(bullet.GetComponent<Bullets>());
         }
 
         // Son de tir
@@ -355,35 +348,7 @@ public class GameManager : MonoBehaviour
 
     void MoveBullets()
     {
-        for (int i = bullets.Count - 1; i >= 0; i--)
-        {
-            if (bullets[i] != null)
-            {
-                // Ajouter des forces au Rigidbody au lieu de d�placer la Transform
-                Rigidbody rb = bullets[i].GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    // R�initialiser la v�locit� et appliquer une nouvelle force
-                    rb.linearVelocity = Vector3.forward * bulletSpeed;
-                }
-                else
-                {
-                    // Fallback au mouvement par transform si pas de Rigidbody
-                    bullets[i].transform.position += Vector3.forward * bulletSpeed * Time.deltaTime;
-                }
-
-                // Suppression des balles qui sortent de l'�cran
-                if (bullets[i].transform.position.z > 9) // Chang� de y � z
-                {
-                    Destroy(bullets[i]);
-                    bullets.RemoveAt(i);
-                }
-            }
-            else
-            {
-                bullets.RemoveAt(i);
-            }
-        }
+        movable.beMoved(this);
     }
 
     void SpawnEnemiesAndAsteroids()
@@ -484,23 +449,23 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
 
         // Destruction de tous les objets
-        foreach (GameObject enemy in lEnemies)
+        foreach (Dangers enemy in lDangers)
         {
             Destroy(enemy);
         }
-        lEnemies.Clear();
+        lDangers.Clear();
 
-        foreach (GameObject asteroid in Asteroids)
+        foreach (Dangers asteroid in lDangers)
         {
             Destroy(asteroid);
         }
-        Asteroids.Clear();
+        lDangers.Clear();
 
-        foreach (GameObject bullet in bullets)
+        foreach (Bullets bullet in lBullets)
         {
             Destroy(bullet);
         }
-        bullets.Clear();
+        lBullets.Clear();
 
         foreach (GameObject powerUp in powerUps)
         {
@@ -513,7 +478,7 @@ public class GameManager : MonoBehaviour
         lives = 3;
         bulletCount = 1;
         gameTime = 0f;
-        spawnRate = initialSpawnRate;
+        spawnRate = dangers.getInitialSpawnRate();
         nextSpawnTime = Time.time + spawnRate;
 
         // Masquage du panel de game over
