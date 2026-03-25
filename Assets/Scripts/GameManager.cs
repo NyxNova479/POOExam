@@ -12,8 +12,6 @@ public class GameManager : MonoBehaviour
 
 
 
-
-
     public GameManager getInstance()
     {
         if(Instance == null)
@@ -22,6 +20,9 @@ public class GameManager : MonoBehaviour
         }
         return Instance;
     }
+
+    private ISpawnable spawnable;
+    private IMovable movable;
 
     [Header("Explosion")]
     public ExplosionManager explosionManager;
@@ -248,6 +249,7 @@ public class GameManager : MonoBehaviour
             // Les collisions sont maintenant g�r�es par les �v�nements OnTriggerEnter/OnCollisionEnter
 
             // G�n�ration de nouveaux ennemis/ast�ro�des
+            spawnable.beSpawned(this);
             SpawnEnemiesAndAsteroids();
 
             // Mise � jour de l'UI
