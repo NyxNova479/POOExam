@@ -17,6 +17,11 @@ public class PlayerShip : Entity
         return playerShip;
     }
 
+    public int getLives()
+    {
+        return lives;
+    }
+
     public Transform getTransform()
     {
         return playerShip.transform;
