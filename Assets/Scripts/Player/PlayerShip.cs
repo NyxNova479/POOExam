@@ -8,7 +8,27 @@ public class PlayerShip : Entity
     protected float speed;
     protected int lives;
 
+    private IShootable shootable;
+
     private GameObject playerShip;
+
+    public GameObject getPrefab()
+    {
+        return playerShip;
+    }
+
+    public Transform getTransform()
+    {
+        return playerShip.transform;
+    }
+    public void setPosition(Vector3 pos)
+    {
+        playerShip.transform.position = pos;
+    }
+    public void setRotation(Quaternion rota)
+    {
+        playerShip.transform.rotation = rota;
+    }
 
     void Start()
     {
@@ -34,7 +54,7 @@ public class PlayerShip : Entity
         float verticalInput = Input.GetAxis("Vertical");
 
         // D�placement sur le plan XZ
-        Vector3 movement = new Vector3(horizontalInput, 0, verticalInput) * playerSpeed * Time.deltaTime;
+        Vector3 movement = new Vector3(horizontalInput, 0, verticalInput) * speed * Time.deltaTime;
         playerShip.transform.position += movement;
 
         // Calcul des angles de rotation pour les deux axes
@@ -62,7 +82,7 @@ public class PlayerShip : Entity
         // Tir
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            FireBullet();
+            shootable.beShot(this);
         }
     }
 

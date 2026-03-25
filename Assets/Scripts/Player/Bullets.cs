@@ -3,7 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Bullets : Entity, IMovable
+public class Bullets : Entity, IMovable, IShootable
 {
 
 
@@ -56,7 +56,7 @@ public class Bullets : Entity, IMovable
         }
     }
 
-    void FireBullet()
+    void FireBullet(Transform playerTransform)
     {
         // Calcul de la position de d�part pour centrer les projectiles
         float startX = -((bulletCount - 1) * bulletSpacing) / 2;
@@ -66,7 +66,7 @@ public class Bullets : Entity, IMovable
         {
             // Calcule la position avec l'offset horizontal
             Vector3 bulletOffset = new Vector3(startX + (i * bulletSpacing), -0.5f, 0.5f);
-            Vector3 spawnPosition = playerShip.transform.position + bulletOffset;
+            Vector3 spawnPosition = playerTransform.position + bulletOffset;
 
             // Instanciation du projectile
             GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
@@ -87,5 +87,10 @@ public class Bullets : Entity, IMovable
         {
             audioSource.Play();
         }
+    }
+
+    public void beShot(PlayerShip player)
+    {
+        FireBullet(player.getTransform());
     }
 }

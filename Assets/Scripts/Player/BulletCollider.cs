@@ -1,13 +1,13 @@
 // Script pour les projectiles
 using UnityEngine;
 
-public class BulletCollider : MonoBehaviour
+public class BulletCollider : EntityColider
 {
     private GameManager gameManager;
 
     void Start()
     {
-        gameManager = FindFirstObjectByType<GameManager>();
+        gameManager = gameManager.getInstance();
     }
 
     // Utilisons OnCollisionEnter au lieu de OnTriggerEnter

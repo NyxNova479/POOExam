@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour
 
     private ISpawnable spawnable;
     private IMovable movable;
+    private IShootable shootable;
+    private PlayerShip player;
 
     [Header("Explosion")]
     public ExplosionManager explosionManager;
@@ -140,12 +142,12 @@ public class GameManager : MonoBehaviour
         if (powerupMessageText) powerupMessageText.gameObject.SetActive(false);
 
         // S'assurer que le joueur a les composants n�cessaires pour les collisions
-        SetupCollisionComponents(playerShip, true, false, "Player");
+        SetupCollisionComponents(player.getPrefab(), true, false, "Player");
 
         // Ajouter le script de gestion de collision au joueur
-        if (playerShip.GetComponent<PlayerCollider>() == null)
+        if (player.GetComponent<PlayerCollider>() == null)
         {
-            playerShip.AddComponent<PlayerCollider>();
+            player.getPrefab().AddComponent<PlayerCollider>();
         }
     }
 
@@ -230,8 +232,6 @@ public class GameManager : MonoBehaviour
                 timeText.text = string.Format("Time: {0:00}:{1:00}", minutes, seconds);
             }
 
-            // Gestion des entr�es du joueur
-            HandlePlayerInput();
 
             // D�placement de tous les objets
             MoveDangers();
@@ -266,76 +266,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void HandlePlayerInput()
-    {
-        // D�placement du joueur
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
-        // D�placement sur le plan XZ
-        Vector3 movement = new Vector3(horizontalInput, 0, verticalInput) * playerSpeed * Time.deltaTime;
-        playerShip.transform.position += movement;
-
-        // Calcul des angles de rotation pour les deux axes
-        float tiltAngleZ = -horizontalInput * 30f; // Inclinaison lat�rale (gauche/droite)
-        float tiltAngleX = verticalInput * 15f;    // Inclinaison longitudinale (avant/arri�re)
-
-        // Cr�ation d'une rotation qui combine les deux inclinaisons
-        Quaternion targetRotation = Quaternion.Euler(tiltAngleX, 0, tiltAngleZ);
-
-        // Application de la rotation avec un lissage pour un effet plus naturel
-        playerShip.transform.rotation = Quaternion.Slerp(playerShip.transform.rotation, targetRotation, 5f * Time.deltaTime);
-
-        // Si aucun input, retour progressif � la rotation neutre
-        if (horizontalInput == 0 && verticalInput == 0)
-        {
-            playerShip.transform.rotation = Quaternion.Slerp(playerShip.transform.rotation, Quaternion.identity, 5f * Time.deltaTime);
-        }
-
-        // Limites de l'�cran pour le joueur
-        Vector3 playerPos = playerShip.transform.position;
-        playerPos.x = Mathf.Clamp(playerPos.x, -8.4f, 8.4f);
-        playerPos.z = Mathf.Clamp(playerPos.z, -11, -2.5f);
-        playerShip.transform.position = playerPos;
-
-        // Tir
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            FireBullet();
-        }
-    }
 
     void FireBullet()
     {
-        // Calcul de la position de d�part pour centrer les projectiles
-        float startX = -((bulletCount - 1) * bulletSpacing) / 2;
-
-        // Cr�ation de plusieurs balles c�te � c�te
-        for (int i = 0; i < bulletCount; i++)
-        {
-            // Calcule la position avec l'offset horizontal
-            Vector3 bulletOffset = new Vector3(startX + (i * bulletSpacing), -0.5f, 0.5f);
-            Vector3 spawnPosition = playerShip.transform.position + bulletOffset;
-
-            // Instanciation du projectile
-            GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
-
-            // Configuration des composants de collision pour la balle
-            // Les projectiles doivent avoir un Rigidbody pour les collisions
-            SetupCollisionComponents(bullet, true, false, "Bullet");
-
-            // Ajouter le script de gestion de collision � la balle
-            bullet.AddComponent<BulletCollider>();
-
-            lBullets.Add(bullet.GetComponent<Bullets>());
-        }
-
-        // Son de tir
-        AudioSource audioSource = GetComponent<AudioSource>();
-        if (audioSource != null)
-        {
-            audioSource.Play();
-        }
+        shootable.beShot(player);
     }
 
     void MoveDangers()
@@ -478,14 +412,14 @@ public class GameManager : MonoBehaviour
         lives = 3;
         bulletCount = 1;
         gameTime = 0f;
-        spawnRate = dangers.getInitialSpawnRate();
+        spawnRate = danger.getInitialSpawnRate();
         nextSpawnTime = Time.time + spawnRate;
 
         // Masquage du panel de game over
         gameOverPanel.SetActive(false);
 
         // Replacement du joueur
-        playerShip.transform.position = new Vector3(0, 0, -7);
-        playerShip.transform.rotation = Quaternion.identity;
+        player.setPosition(new Vector3(0, 0, -7));
+        player.setRotation(Quaternion.identity);
     }
 }
