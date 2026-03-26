@@ -43,7 +43,7 @@ public class PlayerCollider : EntityColider
             // Le joueur a collecté un power-up
             gameManager.ApplyPowerUp();
             Destroy(collision.gameObject);
-            gameManager.powerUps.Remove(collision.gameObject);
+            gameManager.PowerUps.Remove(collision.gameObject);
         }
     }
 }

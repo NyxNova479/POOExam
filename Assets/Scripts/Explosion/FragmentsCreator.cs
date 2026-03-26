@@ -2,12 +2,22 @@ using UnityEngine;
 
 public class FragmentsCreator : MonoBehaviour 
 {
+    private float explosionForce = 15f;
+    private float fragmentLifetime = 2.5f;
+
+
     [Header("Chaos Settings")]
     private float torqueMultiplier = 200f;
     private float scaleVariation = 0.3f;
     private float velocityVariation = 0.5f;
 
-    private void CreateRandomFragments(GameObject originalObject, Mesh originalMesh, Material originalMaterial,Vector3 position, Quaternion rotation, Vector3 scale, Transform containerTransform, int fragmentCount)
+
+    public float getFragmentsLifetime()
+    {
+        return fragmentLifetime;
+    }
+
+    public void CreateRandomFragments(GameObject originalObject, Mesh originalMesh, Material originalMaterial,Vector3 position, Quaternion rotation, Vector3 scale, Transform containerTransform, int fragmentCount)
     {
         // Get mesh bounds for reference
         Bounds bounds = originalMesh.bounds;

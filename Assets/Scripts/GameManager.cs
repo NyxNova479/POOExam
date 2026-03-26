@@ -27,11 +27,12 @@ public class GameManager : MonoBehaviour
     private IMovable movable;
     private IShootable shootable;
     private PlayerShip player;
+    private Bullets bullet;
 
     [Header("Explosion")]
-    public ExplosionManager explosionManager;
+    private ExplosionManager explosionManager;
 
-    // R�f�rence directe � tous les objets du jeu
+    // Référence directe à tous les objets du jeu
 
     private GameObject explosionPrefab;
     private GameObject powerUpPrefab;
@@ -40,14 +41,10 @@ public class GameManager : MonoBehaviour
     private int score;
     private int lives;
 
-    // Nouvelles variables pour les fonctionnalit�s demand�es
-    [Header("Weapon Settings")]
-    public int bulletCount = 1; // Nombre de projectiles tir�s simultan�ment
-    public float bulletSpacing = 0.5f; // Espacement horizontal entre les projectiles
-    public int maxBulletCount = 5; // Limite maximale de projectiles simultan�s
 
 
-    private float gameTime = 0f; // Temps de jeu �coul�
+
+    private float gameTime = 0f; // Temps de jeu écoulé
 
     public float getGameTime()
     {
@@ -70,12 +67,14 @@ public class GameManager : MonoBehaviour
     public void setLives(int value)
     {
         lives = value;
+        if (lives > 3) lives = 3;
+        else if (lives < 0) lives = 0;
     }
 
     // Listes pour suivre tous les objets du jeu
     private List<Dangers> dangers = new List<Dangers>();
     private List<Bullets> bullets = new List<Bullets>();
-    public List<GameObject> powerUps = new List<GameObject>();
+    private List<Entity> powerUps = new List<Entity>();
 
 
 
@@ -98,6 +97,7 @@ public class GameManager : MonoBehaviour
 
     public List<Dangers> lDangers { get => dangers; set => dangers = value; }
     public List<Bullets> lBullets { get => bullets; set => bullets = value; }
+    public List<Entity> PowerUps { get => powerUps; set => powerUps = value; }
 
 
     // Avant de remplacer le syst�me de collisions, il faut cr�er des classes pour g�rer les collisions
@@ -270,7 +270,7 @@ public class GameManager : MonoBehaviour
             // Mise � jour du texte avec la valeur arrondie � l'entier sup�rieur
             if (countdownText != null)
             {
-                countdownText.text = "Red�marrage dans: " + Mathf.Ceil(restartCountdown).ToString();
+                countdownText.text = "Redémarrage dans: " + Mathf.Ceil(restartCountdown).ToString();
             }
 
             // Lorsque le d�compte atteint z�ro
@@ -292,8 +292,6 @@ public class GameManager : MonoBehaviour
         movable.beMoved(this);
     }
 
- 
-    
 
     void MoveBullets()
     {
@@ -307,33 +305,12 @@ public class GameManager : MonoBehaviour
 
     public void SpawnPowerUp(Vector3 position)
     {
-        GameObject powerUp = Instantiate(powerUpPrefab, position, Quaternion.identity);
-
-        // Configuration des composants de collision pour le power-up
-        SetupCollisionComponents(powerUp, true, false, "PowerUp");
-
-        // Ajouter le script de gestion de collision au power-up
-        powerUp.AddComponent<PowerUpCollider>();
-
-        powerUps.Add(powerUp);
+        return;
     }
 
     public void ApplyPowerUp()
     {
-        // Augmenter le nombre de projectiles pour tous les power-ups
-        if (bulletCount < maxBulletCount)
-        {
-            bulletCount++;
-
-            // Affichage d'un message temporaire pour informer le joueur
-            StartCoroutine(ShowPowerupMessage("Weapon Upgraded! Bullets: " + bulletCount));
-        }
-        else
-        {
-            // Bonus de score si le joueur a d�j� le maximum de projectiles
-            score += 200;
-            StartCoroutine(ShowPowerupMessage("Max Weapon Level! +200 Score"));
-        }
+        return;
     }
 
     // Coroutine pour afficher un message temporaire
@@ -416,16 +393,16 @@ public class GameManager : MonoBehaviour
         }
         lBullets.Clear();
 
-        foreach (GameObject powerUp in powerUps)
+        foreach (Entity powerUp in PowerUps)
         {
             Destroy(powerUp);
         }
-        powerUps.Clear();
+        PowerUps.Clear();
 
         // R�initialisation des variables
         score = 0;
         lives = 3;
-        bulletCount = 1;
+        bullet.BulletCount = 1;
         gameTime = 0f;
         danger.setSpawnRate(danger.getInitialSpawnRate());
         danger.setNextSpawnTime(Time.time + danger.getSpawnRate());

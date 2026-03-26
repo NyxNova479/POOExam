@@ -44,7 +44,7 @@ public class UIManager
     }
 
     // Coroutine pour afficher un message temporaire
-    IEnumerator ShowPowerupMessage(string message)
+    public IEnumerator ShowPowerupMessage(string message)
     {
         if (powerupMessageText != null)
         {

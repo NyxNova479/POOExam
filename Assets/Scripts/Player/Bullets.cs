@@ -8,16 +8,29 @@ public class Bullets : Entity, IMovable, IShootable
 
 
     private GameObject bulletPrefab;
-    public float bulletSpeed = 10.0f;
+    private float bulletSpeed = 10.0f;
 
 
     // Nouvelles variables pour les fonctionnalit�s demand�es
     [Header("Weapon Settings")]
-    public int bulletCount = 1; // Nombre de projectiles tir�s simultan�ment
-    public float bulletSpacing = 0.5f; // Espacement horizontal entre les projectiles
-    public int maxBulletCount = 5; // Limite maximale de projectiles simultan�s
+    private int bulletCount = 1; // Nombre de projectiles tir�s simultan�ment
+    private float bulletSpacing = 0.5f; // Espacement horizontal entre les projectiles
+    private int maxBulletCount = 5; // Limite maximale de projectiles simultanés
 
+    public int BulletCount
+    {
+        get => bulletCount; 
+        set 
+        {
+            bulletCount = value;
+            if(bulletCount > maxBulletCount) bulletCount = maxBulletCount;
+        }
+    }
 
+    public int getMaxBulletCount()
+    {
+        return maxBulletCount;
+    }
 
     public void beMoved(GameManager gameManager)
     {
@@ -59,10 +72,10 @@ public class Bullets : Entity, IMovable, IShootable
     void FireBullet(Transform playerTransform)
     {
         // Calcul de la position de d�part pour centrer les projectiles
-        float startX = -((bulletCount - 1) * bulletSpacing) / 2;
+        float startX = -((BulletCount - 1) * bulletSpacing) / 2;
 
         // Cr�ation de plusieurs balles c�te � c�te
-        for (int i = 0; i < bulletCount; i++)
+        for (int i = 0; i < BulletCount; i++)
         {
             // Calcule la position avec l'offset horizontal
             Vector3 bulletOffset = new Vector3(startX + (i * bulletSpacing), -0.5f, 0.5f);
