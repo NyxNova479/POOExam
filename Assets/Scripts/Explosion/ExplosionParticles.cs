@@ -22,5 +22,5 @@ public class ExplosionParticles : MonoBehaviour
     }
 
     // Optional particle system prefab for additional effects
-    public GameObject explosionParticlePrefab;
+    private GameObject explosionParticlePrefab;
 }

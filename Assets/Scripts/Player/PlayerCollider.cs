@@ -5,7 +5,7 @@ public class PlayerCollider : EntityColider
 {
 
 
-    public void HandlePlayerHit(GameObject hitObject)
+    public void HandlePlayerHit(GameObject hitObject, GameObject explosionPrefab)
     {
         // Destruction de l'objet qui a touch� le joueur
         Instantiate(explosionPrefab, hitObject.transform.position, Quaternion.identity);
@@ -31,7 +31,7 @@ public class PlayerCollider : EntityColider
     }
 
     // Utilisons OnCollisionEnter au lieu de OnTriggerEnter
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Asteroid"))
         {

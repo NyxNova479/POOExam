@@ -4,7 +4,7 @@ public abstract class EntityColider : MonoBehaviour, IColidable
 {
 
     protected GameManager gameManager;
-
+    protected IExploder exploder;
 
 
     private void Start()

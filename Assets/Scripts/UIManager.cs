@@ -2,7 +2,7 @@
 using UnityEngine.SocialPlatforms.Impl;
 using System.Collections;
 
-public class UIManager 
+public class UIManager : MonoBehaviour
 {
     private GameManager gameManager;
 

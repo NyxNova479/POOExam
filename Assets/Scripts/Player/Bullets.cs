@@ -7,8 +7,10 @@ public class Bullets : Entity, IMovable, IShootable
 {
 
 
-    private GameObject bulletPrefab;
+    [SerializeField] private GameObject bulletPrefab;
     private float bulletSpeed = 10.0f;
+
+    private BulletCollider bulletCollider;
 
 
     // Nouvelles variables pour les fonctionnalit�s demand�es
@@ -86,7 +88,7 @@ public class Bullets : Entity, IMovable, IShootable
 
             // Configuration des composants de collision pour la balle
             // Les projectiles doivent avoir un Rigidbody pour les collisions
-            SetupCollisionComponents(bullet, true, false, "Bullet");
+            bulletCollider.SetupCollisionComponents(bullet, true, false, "Bullet");
 
             // Ajouter le script de gestion de collision � la balle
             bullet.AddComponent<BulletCollider>();

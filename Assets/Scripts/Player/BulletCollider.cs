@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class BulletCollider : EntityColider
 {
-
+    
 
     // Utilisons OnCollisionEnter au lieu de OnTriggerEnter
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
@@ -28,12 +28,12 @@ public class BulletCollider : EntityColider
         }
     }
 
-    public void HandleBulletEnemyCollision(GameObject bullet, GameObject enemy)
+    public void HandleBulletEnemyCollision(GameObject bullet, GameObject enemy, GameObject explosionPrefab)
     {
         // Explosion avec effet de fragmentation
-        if (explosionManager != null)
+        if (exploder != null)
         {
-            explosionManager.ExplodeObject(enemy);
+            exploder.createExplosion(enemy);
         }
         else
         {

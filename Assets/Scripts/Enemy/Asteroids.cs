@@ -5,12 +5,13 @@ using System.Collections.Generic;
 public class Asteroids : Dangers
 {
     [SerializeField] private GameObject asteroidPrefab;
+    [SerializeField] private AsteroidCollider astCollider;
 
     private float asteroidSpeed = 2.0f;
 
-    public override void Move(List<Dangers> dangers)
+    public override void Move(List<Dangers> dangers, PlayerShip player)
     {
-        MoveAsteroids(dangers);
+        MoveAsteroids(dangers, player);
     }
 
     public override void Spawn()
@@ -27,7 +28,7 @@ public class Asteroids : Dangers
                 GameObject asteroid = Instantiate(asteroidPrefab, spawnPosition, Quaternion.identity);
 
                 // Configuration des composants de collision pour l'ast�ro�de
-                SetupCollisionComponents(asteroid, true, false, "Asteroid");
+                astCollider.SetupCollisionComponents(asteroid, true, false, "Asteroid");
 
                 // Ajouter le script de gestion de collision � l'ast�ro�de
                 asteroid.AddComponent<AsteroidCollider>();
@@ -38,7 +39,7 @@ public class Asteroids : Dangers
         }
     }
 
-    protected void MoveAsteroids(List<Dangers> asteroids)
+    protected void MoveAsteroids(List<Dangers> asteroids, PlayerShip player)
     {
         for (int i = asteroids.Count - 1; i >= 0; i--)
         {
@@ -72,9 +73,9 @@ public class Asteroids : Dangers
                     gameManager.setLives(gameManager.getLives() - 1);
 
                     // Effet visuel pour montrer que l'ast�ro�de a travers�
-                    if (playerDamageEffect != null)
+                    if (player.getPlayerDamageEffect() != null)
                     {
-                        Instantiate(playerDamageEffect, asteroids[i].transform.position, Quaternion.identity);
+                        Instantiate(player.getPlayerDamageEffect(), asteroids[i].transform.position, Quaternion.identity);
                     }
 
                     // Destruction de l'ast�ro�de

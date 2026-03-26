@@ -54,17 +54,13 @@ public abstract class Dangers : Entity, IMovable, ISpawnable
     }
 
 
-    public abstract void Move(List<Dangers> dangers);
-
-    public void beMoved(GameManager gameManager)
-    {
-        Move(gameManager.lDangers);
-    }
-
+    public abstract void Move(List<Dangers> dangers, PlayerShip playerShip);
     public abstract void Spawn();
+
+
     
     // Utilisons OnCollisionEnter au lieu de OnTriggerEnter
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
@@ -74,6 +70,10 @@ public abstract class Dangers : Entity, IMovable, ISpawnable
     }
 
     
+    public void beMoved(GameManager gameManager)
+    {
+        Move(gameManager.lDangers, gameManager.getPlayer());
+    }
 
     public void beSpawned(GameManager gameManager)
     {

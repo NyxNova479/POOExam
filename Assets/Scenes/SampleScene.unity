@@ -11686,6 +11686,7 @@ GameObject:
   - component: {fileID: 2040990980}
   - component: {fileID: 2040990979}
   - component: {fileID: 2040990981}
+  - component: {fileID: 2040990982}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -11705,32 +11706,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e19f56071354b34aa432be8c80ca12b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionManager: {fileID: 2040990981}
-  playerShip: {fileID: 663836049414597825}
-  enemyPrefab: {fileID: 196105707552078345, guid: c26ead1fcdf028b43af4ef8c40323011,
-    type: 3}
-  asteroidPrefab: {fileID: 5176812263706246583, guid: 2fa9efb7ce3b9f844b2aaed34986be3c,
-    type: 3}
-  bulletPrefab: {fileID: 5389837174213493555, guid: b783cfe89190393439df1653eff12aa8,
-    type: 3}
-  explosionPrefab: {fileID: 6403353413147890401, guid: f9177c7e254ee774498f31c299703063,
-    type: 3}
-  powerUpPrefab: {fileID: 4375325453614173916, guid: 2db4f101870e79f4ebaafac9e416bfa7,
-    type: 3}
-  score: 0
-  lives: 0
-  playerSpeed: 10
-  bulletSpeed: 10
-  enemySpeed: 3
-  asteroidSpeed: 2
-  spawnRate: 2
-  bulletCount: 1
-  bulletSpacing: 0.5
-  maxBulletCount: 5
-  initialSpawnRate: 3
-  minSpawnRate: 0.1
-  spawnRateDifficulty: 0.1
-  powerUps: []
   scoreText: {fileID: 169593459}
   livesText: {fileID: 1207875883}
   gameOverPanel: {fileID: 1993041029}
@@ -11765,15 +11740,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7783b55bdd99e074d882e32484b98d5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionForce: 10
-  explosionRadius: 5
-  upwardsModifier: 1
-  fragmentLifetime: 2
-  fragmentsRange: {x: 5, y: 20}
-  torqueMultiplier: 200
-  scaleVariation: 2
-  velocityVariation: 0.5
-  explosionParticlePrefab: {fileID: 0}
+  fragmentsCreator: {fileID: 2040990982}
+--- !u!114 &2040990982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2040990978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60cff8f058299954b8ad0e0334359530, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &663836049414597825
 GameObject:
   m_ObjectHideFlags: 0
@@ -11878,8 +11857,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f58db92e9e7312e4b803a776746cc006, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  lives: 5
+  playerDamageEffect: {fileID: 271379617939054569, guid: 034c0839aa3671f4faeddc0abc34eb68,
+    type: 3}
+  playerShip: {fileID: 919132149155446097, guid: ed6cc3a85d09df6488323ce9de2b371b,
+    type: 3}
 --- !u!65 &4111632860656950461
 BoxCollider:
   m_ObjectHideFlags: 0

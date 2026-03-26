@@ -3,14 +3,15 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class PowerUp : Entity
 {
-    private GameObject powerUpPrefab;
+    [SerializeField] private GameObject powerUpPrefab;
+    [SerializeField] private PowerUpCollider upCollider;
 
     public void SpawnPowerUp(Vector3 position)
     {
         GameObject powerUp = Instantiate(powerUpPrefab, position, Quaternion.identity);
 
         // Configuration des composants de collision pour le power-up
-        SetupCollisionComponents(powerUp, true, false, "PowerUp");
+        upCollider.SetupCollisionComponents(powerUp, true, false, "PowerUp");
 
         // Ajouter le script de gestion de collision au power-up
         powerUp.AddComponent<PowerUpCollider>();

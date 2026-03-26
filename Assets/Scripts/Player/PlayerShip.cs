@@ -1,28 +1,33 @@
 ﻿using UnityEngine;
 
-public class PlayerShip : Entity
+public class PlayerShip : Entity, IPlayable
 {
 
 
     // Variables dupliquées qui créent des dépendances
-    protected float speed = 5.0f;
-    protected int lives;
+    private float speed = 5.0f;
+    private int lives;
+    [SerializeField] private GameObject playerDamageEffect; // Effet visuel quand un ennemi traverse
+    [SerializeField] private GameObject playerShip;
 
     private IShootable shootable;
 
-    private GameObject playerShip;
 
     public GameObject getPrefab()
     {
         return playerShip;
     }
 
-
+    public GameObject getPlayerDamageEffect()
+    {
+        return playerDamageEffect;
+    }
 
     public Transform getTransform()
     {
         return playerShip.transform;
     }
+
     public void setPosition(Vector3 pos)
     {
         playerShip.transform.position = pos;
@@ -86,5 +91,8 @@ public class PlayerShip : Entity
         }
     }
 
-
+    public void bePlayed()
+    {
+        HandlePlayerInput();
+    }
 }

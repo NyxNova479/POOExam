@@ -26,8 +26,9 @@ public class GameManager : MonoBehaviour
     private ISpawnable spawnable;
     private IMovable movable;
     private IShootable shootable;
-    private PlayerShip player;
-    private Bullets bullet;
+    [SerializeField] private PlayerShip player;
+    [SerializeField] private Bullets bullet;
+    [SerializeField] private UIManager uiManager;
 
     [Header("Explosion")]
     private ExplosionManager explosionManager;
@@ -45,6 +46,11 @@ public class GameManager : MonoBehaviour
 
 
     private float gameTime = 0f; // Temps de jeu écoulé
+
+    public PlayerShip getPlayer()
+    {
+        return player;
+    }
 
     public float getGameTime()
     {
@@ -89,7 +95,7 @@ public class GameManager : MonoBehaviour
     public GameObject gameOverPanel;
     public TMPro.TMP_Text powerupMessageText; // Pour afficher les messages de powerup
     public TMPro.TMP_Text timeText; // Pour afficher le temps �coul�
-    public GameObject playerDamageEffect; // Effet visuel quand un ennemi traverse
+
 
     private bool isGameOver = false;
     private float restartCountdown = 3.0f;
@@ -137,6 +143,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
       
+        Instance = this.getInstance();
 
         // Initialisation
         score = 0;

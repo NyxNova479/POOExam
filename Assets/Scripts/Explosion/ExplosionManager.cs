@@ -1,18 +1,21 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class ExplosionManager : MonoBehaviour
+public class ExplosionManager : MonoBehaviour, IExploder
 {
 
     [SerializeField] FragmentsCreator fragmentsCreator;
 
     [Header("Explosion Settings")]
-    private float explosionForce = 15f;
-    private float explosionRadius = 5f;
-    private float upwardsModifier = 1f;
+    //private float explosionForce = 15f;
+    //private float explosionRadius = 5f;
+    //private float upwardsModifier = 1f;
     private Vector2 fragmentsRange = new Vector2(5, 8); // Min and max number of fragments
 
-
+    public void createExplosion(GameObject explodable)
+    {
+        ExplodeObject(explodable);
+    }
 
     public void ExplodeObject(GameObject objectToExplode)
     {

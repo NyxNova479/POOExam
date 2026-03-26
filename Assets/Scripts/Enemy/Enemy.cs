@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class Enemy : Dangers, IColidable
 {
     [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private EnemyCollider enCollider;
 
     private float enemySpeed = 3.0f;
 
@@ -14,9 +15,9 @@ public class Enemy : Dangers, IColidable
         throw new System.NotImplementedException();
     }
 
-    public override void Move(List<Dangers> dangers)
+    public override void Move(List<Dangers> dangers, PlayerShip player)
     {
-        MoveEnemies(dangers);
+        MoveEnemies(dangers, player);
     }
 
     public override void Spawn()
@@ -32,7 +33,7 @@ public class Enemy : Dangers, IColidable
                 GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
 
                 // Configuration des composants de collision pour l'ennemi
-                SetupCollisionComponents(enemy, true, false, "Enemy");
+                enCollider.SetupCollisionComponents(enemy, true, false, "Enemy");
 
                 // Ajouter le script de gestion de collision � l'ennemi
                 enemy.AddComponent<EnemyCollider>();
@@ -45,7 +46,7 @@ public class Enemy : Dangers, IColidable
 
     }
 
-    protected void MoveEnemies(List<Dangers> enemies)
+    protected void MoveEnemies(List<Dangers> enemies, PlayerShip player)
     {
         {
             for (int i = enemies.Count - 1; i >= 0; i--)
@@ -72,9 +73,9 @@ public class Enemy : Dangers, IColidable
                         gameManager.setLives(gameManager.getLives()-1);
 
                         // Effet visuel pour montrer que l'ennemi a travers�
-                        if (playerDamageEffect != null)
+                        if (player.getPlayerDamageEffect() != null)
                         {
-                            Instantiate(playerDamageEffect, enemies[i].transform.position, Quaternion.identity);
+                            Instantiate(player.getPlayerDamageEffect(), enemies[i].transform.position, Quaternion.identity);
                         }
 
                         // Destruction de l'ennemi
