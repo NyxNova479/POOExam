@@ -241,13 +241,7 @@ public class GameManager : MonoBehaviour
 
 
 
-            // Affichage du temps de jeu (optionnel)
-            if (timeText != null)
-            {
-                int minutes = Mathf.FloorToInt(gameTime / 60);
-                int seconds = Mathf.FloorToInt(gameTime % 60);
-                timeText.text = string.Format("Time: {0:00}:{1:00}", minutes, seconds);
-            }
+
 
 
             // Déplacement de tous les objets
@@ -260,16 +254,15 @@ public class GameManager : MonoBehaviour
             // Génération de nouveaux ennemis/ast�ro�des
             SpawnEnemiesAndAsteroids();
 
-            // Mise à jour de l'UI
-            UpdateUI();
+
         }
 
-        // Gestion du d�compte de red�marrage
+        // Gestion du décompte de red�marrage
         if (isGameOver)
         {
             restartCountdown -= Time.deltaTime;
 
-            // Mise � jour du texte avec la valeur arrondie à l'entier supérieur
+            // Mise à jour du texte avec la valeur arrondie à l'entier supérieur
             if (countdownText != null)
             {
                 countdownText.text = "Redémarrage dans: " + Mathf.Ceil(restartCountdown).ToString();
@@ -329,18 +322,9 @@ public class GameManager : MonoBehaviour
         return;
     }
 
-    // Coroutine pour afficher un message temporaire
-    IEnumerator ShowPowerupMessage(string message)
-    {
-        if (powerupMessageText != null)
-        {
-            powerupMessageText.text = message;
-            powerupMessageText.gameObject.SetActive(true);
-            yield return new WaitForSeconds(2.0f);
-            powerupMessageText.gameObject.SetActive(false);
-        }
-        yield return null;
-    }
+
+
+
 
     void UpdateUI()
     {
@@ -365,7 +349,7 @@ public class GameManager : MonoBehaviour
         isGameOver = true;
         restartCountdown = 3.0f;
 
-        // Mise � jour initiale du texte de décompte
+        // Mise à jour initiale du texte de décompte
         if (countdownText != null)
         {
             countdownText.text = "Redémarrage dans: " + Mathf.Ceil(restartCountdown).ToString();

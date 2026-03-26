@@ -88,6 +88,7 @@ public class PlayerShip : Entity, IPlayable
         // Tir
         if (Input.GetKeyDown(KeyCode.Space))
         {
+
             shootable.beShot(this);
         }
     }
