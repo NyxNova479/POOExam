@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     // Référence directe à tous les objets du jeu
 
     private GameObject explosionPrefab;
-    private GameObject powerUpPrefab;
+
 
     // Variables publiques expos�es sans encapsulation
     private int score;
@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
     // Listes pour suivre tous les objets du jeu
     private List<Dangers> dangers = new List<Dangers>();
     private List<Bullets> bullets = new List<Bullets>();
-    private List<Entity> powerUps = new List<Entity>();
+    private List<PowerUp> powerUps = new List<PowerUp>();
 
 
 
@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
 
     public List<Dangers> lDangers { get => dangers; set => dangers = value; }
     public List<Bullets> lBullets { get => bullets; set => bullets = value; }
-    public List<Entity> PowerUps { get => powerUps; set => powerUps = value; }
+    public List<PowerUp> PowerUps { get => powerUps; set => powerUps = value; }
 
 
     // Avant de remplacer le syst�me de collisions, il faut cr�er des classes pour g�rer les collisions
@@ -105,13 +105,6 @@ public class GameManager : MonoBehaviour
 
     // Voici les scripts � cr�er pour le syst�me de trigger/collision Unity
     // Note pour les �tudiants : Ces scripts devraient �tre dans des fichiers s�par�s pour respecter les principes SOLID
-
-
-
-
-
-
-
 
 
 

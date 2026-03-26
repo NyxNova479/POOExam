@@ -69,7 +69,7 @@ public class Enemy : Dangers, IColidable
                     if (enemies[i].transform.position.z < -12)
                     {
                         // Enlever un point de vie au joueur
-                        lives--;
+                        gameManager.setLives(gameManager.getLives()-1);
 
                         // Effet visuel pour montrer que l'ennemi a travers�
                         if (playerDamageEffect != null)
@@ -82,9 +82,9 @@ public class Enemy : Dangers, IColidable
                         enemies.RemoveAt(i);
 
                         // V�rifier si le joueur n'a plus de vies
-                        if (lives <= 0)
+                        if (gameManager.getLives() <= 0)
                         {
-                            GameOver();
+                            gameManager.GameOver();
                         }
                     }
                 }

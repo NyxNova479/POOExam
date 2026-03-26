@@ -10,7 +10,6 @@ public class ExplosionManager : MonoBehaviour
     private float explosionForce = 15f;
     private float explosionRadius = 5f;
     private float upwardsModifier = 1f;
-    private float fragmentLifetime = 2.5f;
     private Vector2 fragmentsRange = new Vector2(5, 8); // Min and max number of fragments
 
 

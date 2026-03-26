@@ -15,7 +15,7 @@ public class PowerUp : Entity
         // Ajouter le script de gestion de collision au power-up
         powerUp.AddComponent<PowerUpCollider>();
 
-        gameManager.PowerUps.Add(powerUp.GetComponent<Entity>());
+        gameManager.PowerUps.Add(powerUp.GetComponent<PowerUp>());
     }
     public void ApplyPowerUp(Bullets bullet, UIManager uiManager)
     {
