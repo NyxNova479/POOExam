@@ -7,7 +7,7 @@ public class Entity : MonoBehaviour
 
     private void Start()
     {
-        gameManager = gameManager.getInstance();
+        gameManager = GameManager.getInstance();
     }
 
 

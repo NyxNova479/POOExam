@@ -10,25 +10,14 @@ public class GameManager : MonoBehaviour
 
     private static GameManager Instance;
 
-
-
-    public GameManager getInstance()
-    {
-        if(Instance == null)
-        {
-            Instance = new GameManager();
-        }
-        return Instance;
-    }
-
-    private Dangers danger;
-
-    private ISpawnable spawnable;
-    private IMovable movable;
-    private IShootable shootable;
     [SerializeField] private PlayerShip player;
     [SerializeField] private Bullets bullet;
     [SerializeField] private UIManager uiManager;
+
+    private Dangers danger;
+    private ISpawnable spawnable;
+    private IMovable movable;
+    private IShootable shootable;
 
     [Header("Explosion")]
     private ExplosionManager explosionManager;
@@ -42,10 +31,23 @@ public class GameManager : MonoBehaviour
     private int score;
     private int lives;
 
-
-
-
     private float gameTime = 0f; // Temps de jeu écoulé
+
+
+
+
+    public static GameManager getInstance()
+    {
+        if(Instance == null)
+        {
+            Instance = new GameManager();
+        }
+        return Instance;
+    }
+
+
+
+
 
     public PlayerShip getPlayer()
     {
@@ -106,18 +108,18 @@ public class GameManager : MonoBehaviour
     public List<PowerUp> PowerUps { get => powerUps; set => powerUps = value; }
 
 
-    // Avant de remplacer le syst�me de collisions, il faut cr�er des classes pour g�rer les collisions
-    // Ces classes seront attach�es aux objets du jeu concern�s
+    // Avant de remplacer le système de collisions, il faut créer des classes pour gérer les collisions
+    // Ces classes seront attach�es aux objets du jeu concernés
 
-    // Voici les scripts � cr�er pour le syst�me de trigger/collision Unity
-    // Note pour les �tudiants : Ces scripts devraient �tre dans des fichiers s�par�s pour respecter les principes SOLID
+    // Voici les scripts à créer pour le système de trigger/collision Unity
+    // Note pour les étudiants : Ces scripts devraient être dans des fichiers s�par�s pour respecter les principes SOLID
 
 
 
-    // M�thode pour g�rer les collisions avec le joueur
+    // Méthode pour gérer les collisions avec le joueur
     public void HandlePlayerHit(GameObject hitObject)
     {
-        // Destruction de l'objet qui a touch� le joueur
+        // Destruction de l'objet qui a touché le joueur
         Instantiate(explosionPrefab, hitObject.transform.position, Quaternion.identity);
 
         if (hitObject.CompareTag("Enemy"))
@@ -143,7 +145,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
       
-        Instance = this.getInstance();
+
 
         // Initialisation
         score = 0;
@@ -157,7 +159,7 @@ public class GameManager : MonoBehaviour
         if (powerupMessageText) powerupMessageText.gameObject.SetActive(false);
 
         // S'assurer que le joueur a les composants n�cessaires pour les collisions
-        SetupCollisionComponents(player.getPrefab(), true, false, "Player");
+        //SetupCollisionComponents(player.getPrefab(), true, false, "Player");
 
         // Ajouter le script de gestion de collision au joueur
         if (player.GetComponent<PlayerCollider>() == null)
@@ -248,17 +250,17 @@ public class GameManager : MonoBehaviour
             }
 
 
-            // D�placement de tous les objets
+            // Déplacement de tous les objets
             MoveDangers();
             MoveBullets();
 
             // Nous ne v�rifions plus les collisions manuellement
             // Les collisions sont maintenant g�r�es par les �v�nements OnTriggerEnter/OnCollisionEnter
 
-            // G�n�ration de nouveaux ennemis/ast�ro�des
+            // Génération de nouveaux ennemis/ast�ro�des
             SpawnEnemiesAndAsteroids();
 
-            // Mise � jour de l'UI
+            // Mise à jour de l'UI
             UpdateUI();
         }
 
@@ -267,13 +269,13 @@ public class GameManager : MonoBehaviour
         {
             restartCountdown -= Time.deltaTime;
 
-            // Mise � jour du texte avec la valeur arrondie � l'entier sup�rieur
+            // Mise � jour du texte avec la valeur arrondie à l'entier supérieur
             if (countdownText != null)
             {
                 countdownText.text = "Redémarrage dans: " + Mathf.Ceil(restartCountdown).ToString();
             }
 
-            // Lorsque le d�compte atteint z�ro
+            // Lorsque le décompte atteint zéro
             if (restartCountdown <= 0)
             {
                 RestartGame();
@@ -289,18 +291,32 @@ public class GameManager : MonoBehaviour
 
     void MoveDangers()
     {
-        movable.beMoved(this);
+        foreach (Dangers danger in dangers)
+        {
+            movable = danger;
+            movable.beMoved(this);
+        }
     }
 
 
     void MoveBullets()
     {
-        movable.beMoved(this);
+        foreach(Bullets bullet in bullets)
+        {
+
+            movable = bullet;
+            movable.beMoved(this);
+        }
+
     }
 
     void SpawnEnemiesAndAsteroids()
     {
-        spawnable.beSpawned(this);
+        foreach(Dangers danger in dangers)
+        {
+            spawnable = danger;
+            spawnable.beSpawned(this);
+        }
     }
 
     public void SpawnPowerUp(Vector3 position)
@@ -328,7 +344,7 @@ public class GameManager : MonoBehaviour
 
     void UpdateUI()
     {
-        // Mise � jour des textes de score et de vies
+        // Mise à jour des textes de score et de vies
         if (scoreText != null)
         {
             scoreText.text = "Score: " + score;
@@ -345,33 +361,33 @@ public class GameManager : MonoBehaviour
         // Affichage du panel de game over
         gameOverPanel.SetActive(true);
 
-        // Initialisation du compte � rebours
+        // Initialisation du compte à rebours
         isGameOver = true;
         restartCountdown = 3.0f;
 
-        // Mise � jour initiale du texte de d�compte
+        // Mise � jour initiale du texte de décompte
         if (countdownText != null)
         {
             countdownText.text = "Redémarrage dans: " + Mathf.Ceil(restartCountdown).ToString();
             countdownText.gameObject.SetActive(true);
         }
 
-        // Note: ne pas arr�ter le temps ici puisque nous voulons que le d�compte fonctionne
-        // Time.timeScale = 0; -- retirez cette ligne s'il elle est pr�sente
+        // Note: ne pas arrêter le temps ici puisque nous voulons que le décompte fonctionne
+        // Time.timeScale = 0; -- retirez cette ligne si elle est présente
     }
 
     public void RestartGame()
     {
-        // R�initialisation du statut de game over
+        // Réinitialisation du statut de game over
         isGameOver = false;
 
-        // Masquage du texte de d�compte
+        // Masquage du texte de décompte
         if (countdownText != null)
         {
             countdownText.gameObject.SetActive(false);
         }
 
-        // Remise � z�ro du jeu
+        // Remise à zéro du jeu
         Time.timeScale = 1;
 
         // Destruction de tous les objets

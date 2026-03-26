@@ -40,7 +40,7 @@ public class PlayerShip : Entity, IPlayable
     void Start()
     {
         // Recherche du GameManager dans la scène
-        gameManager = gameManager.getInstance();
+        gameManager = GameManager.getInstance();
 
         // Initialisation des variables
         lives = gameManager.getLives();
@@ -50,6 +50,7 @@ public class PlayerShip : Entity, IPlayable
     {
         // Mise à jour des variables depuis le GameManager
         lives = gameManager.getLives();
+        HandlePlayerInput();
     }
 
     void HandlePlayerInput()

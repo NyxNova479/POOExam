@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public abstract class Dangers : Entity, IMovable, ISpawnable
 {
 
-
+    private GameObject explosionPrefab;
     protected float spawnRate = 2.0f;
 
 
@@ -40,7 +40,7 @@ public abstract class Dangers : Entity, IMovable, ISpawnable
 
     void Start()
     {
-        gameManager = gameManager.getInstance();
+        gameManager = GameManager.getInstance();
         spawnRate = initialSpawnRate;
         nextSpawnTime = Time.time + spawnRate;
     }
@@ -65,7 +65,7 @@ public abstract class Dangers : Entity, IMovable, ISpawnable
         if (collision.gameObject.CompareTag("Player"))
         {
             // Le joueur a touché un enemy
-            gameManager.HandlePlayerHit(gameObject);
+            HandlePlayerHit(gameObject);
         }
     }
 
@@ -78,5 +78,30 @@ public abstract class Dangers : Entity, IMovable, ISpawnable
     public void beSpawned(GameManager gameManager)
     {
         Spawn();
+    }
+    // Méthode pour gérer les collisions avec le joueur
+    public void HandlePlayerHit(GameObject hitObject)
+    {
+        // Destruction de l'objet qui a touché le joueur
+        Instantiate(explosionPrefab, hitObject.transform.position, Quaternion.identity);
+
+        if (hitObject.CompareTag("Enemy"))
+        {
+            Destroy(hitObject);
+            gameManager.lDangers.Remove(hitObject.GetComponent<Dangers>());
+        }
+        else if (hitObject.CompareTag("Asteroid"))
+        {
+            Destroy(hitObject);
+            gameManager.lDangers.Remove(hitObject.GetComponent<Dangers>());
+        }
+
+        // Perte d'une vie
+        gameManager.setLives(gameManager.getLives() - 1);
+
+        if (gameManager.getLives() <= 0)
+        {
+            gameManager.GameOver();
+        }
     }
 }

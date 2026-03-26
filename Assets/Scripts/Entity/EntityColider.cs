@@ -9,7 +9,8 @@ public abstract class EntityColider : MonoBehaviour, IColidable
 
     private void Start()
     {
-        gameManager = gameManager.getInstance();
+        gameManager = GameManager.getInstance();
+
     }
 
 

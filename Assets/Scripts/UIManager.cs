@@ -1,18 +1,19 @@
-﻿using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
+﻿using System;
 using System.Collections;
+using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class UIManager : MonoBehaviour
 {
     private GameManager gameManager;
 
     // UI references
-    private TMPro.TMP_Text scoreText;
-    private TMPro.TMP_Text livesText;
-    private GameObject gameOverPanel;
-    private TMPro.TMP_Text powerupMessageText; // Pour afficher les messages de powerup
-    private TMPro.TMP_Text timeText; // Pour afficher le temps �coul�
-    private GameObject playerDamageEffect; // Effet visuel quand un ennemi traverse
+    [SerializeField] private TMPro.TMP_Text scoreText;
+    [SerializeField] private TMPro.TMP_Text livesText;
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private TMPro.TMP_Text powerupMessageText; // Pour afficher les messages de powerup
+    [SerializeField] private TMPro.TMP_Text timeText; // Pour afficher le temps �coul�
+
 
 
     private TMPro.TMP_Text countdownText;
@@ -20,13 +21,20 @@ public class UIManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        gameManager = gameManager.getInstance();
+        gameManager = GameManager.getInstance();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        // Affichage du temps de jeu (optionnel)
+        if (timeText != null)
+        {
+            int minutes = Mathf.FloorToInt(gameManager.getGameTime() / 60);
+            int seconds = Mathf.FloorToInt(gameManager.getGameTime() % 60);
+            timeText.text = string.Format("Time: {0:00}:{1:00}", minutes, seconds);
+        }
+        UpdateUI();
     }
 
     void UpdateUI()
