@@ -23,6 +23,21 @@ public abstract class Dangers : Entity, IMovable, ISpawnable
         return initialSpawnRate;
     }
 
+    public float getSpawnRate()
+    {
+        return spawnRate;
+    }
+
+    public void setSpawnRate(float value)
+    {
+        spawnRate = value;
+    }
+
+    public void setNextSpawnTime(float value)
+    {
+        nextSpawnTime = value;
+    }
+
     void Start()
     {
         gameManager = gameManager.getInstance();

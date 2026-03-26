@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
+using System.Collections;
 
 public class UIManager 
 {
+    private GameManager gameManager;
 
     // UI references
     private TMPro.TMP_Text scoreText;
@@ -18,7 +20,7 @@ public class UIManager
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        gameManager = gameManager.getInstance();
     }
 
     // Update is called once per frame
@@ -32,12 +34,12 @@ public class UIManager
         // Mise � jour des textes de score et de vies
         if (scoreText != null)
         {
-            scoreText.text = "Score: " + score;
+            scoreText.text = "Score: " + gameManager.getScore();
         }
 
         if (livesText != null)
         {
-            livesText.text = "Lives: " + lives;
+            livesText.text = "Lives: " + gameManager.getLives();
         }
     }
 

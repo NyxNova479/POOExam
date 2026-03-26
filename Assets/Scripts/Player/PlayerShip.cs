@@ -5,7 +5,7 @@ public class PlayerShip : Entity
 
 
     // Variables dupliquées qui créent des dépendances
-    protected float speed;
+    protected float speed = 5.0f;
     protected int lives;
 
     private IShootable shootable;
@@ -38,18 +38,16 @@ public class PlayerShip : Entity
     void Start()
     {
         // Recherche du GameManager dans la scène
-        gameManager = FindFirstObjectByType<GameManager>();
+        gameManager = gameManager.getInstance();
 
         // Initialisation des variables
-        speed = gameManager.playerSpeed;
-        lives = gameManager.lives;
+        lives = gameManager.getLives();
     }
 
     void Update()
     {
         // Mise à jour des variables depuis le GameManager
-        speed = gameManager.playerSpeed;
-        lives = gameManager.lives;
+        lives = gameManager.getLives();
     }
 
     void HandlePlayerInput()

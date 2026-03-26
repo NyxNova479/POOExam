@@ -1,14 +1,9 @@
 ﻿// Script pour le joueur
 using UnityEngine;
 
-public class PlayerCollider : MonoBehaviour
+public class PlayerCollider : EntityColider
 {
-    private GameManager gameManager;
 
-    void Start()
-    {
-        gameManager = FindFirstObjectByType<GameManager>();
-    }
 
     public void HandlePlayerHit(GameObject hitObject)
     {
@@ -18,18 +13,18 @@ public class PlayerCollider : MonoBehaviour
         if (hitObject.CompareTag("Enemy"))
         {
             Destroy(hitObject);
-            Enemies.Remove(hitObject);
+            gameManager.lDangers.Remove(hitObject.GetComponent<Dangers>());
         }
         else if (hitObject.CompareTag("Asteroid"))
         {
             Destroy(hitObject);
-            Asteroids.Remove(hitObject);
+            gameManager.lDangers.Remove(hitObject.GetComponent<Dangers>());
         }
 
         // Perte d'une vie
-        lives--;
+        gameManager.setLives(gameManager.getLives() - 1);
 
-        if (lives <= 0)
+        if (gameManager.getLives() <= 0)
         {
             GameOver();
         }

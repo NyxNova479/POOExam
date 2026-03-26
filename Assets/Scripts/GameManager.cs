@@ -37,13 +37,8 @@ public class GameManager : MonoBehaviour
     private GameObject powerUpPrefab;
 
     // Variables publiques expos�es sans encapsulation
-    public int score;
-    public int lives;
-    public float playerSpeed = 5.0f;
-    public float bulletSpeed = 10.0f;
-    public float enemySpeed = 3.0f;
-    public float asteroidSpeed = 2.0f;
-    public float spawnRate = 2.0f;
+    private int score;
+    private int lives;
 
     // Nouvelles variables pour les fonctionnalit�s demand�es
     [Header("Weapon Settings")]
@@ -57,6 +52,24 @@ public class GameManager : MonoBehaviour
     public float getGameTime()
     {
         return gameTime;
+    }
+
+    public int getScore()
+    {
+        return score;
+    }
+    public int getLives()
+    {
+        return lives;
+    }
+
+    public void setScore(int value)
+    {
+        score = value;
+    }
+    public void setLives(int value)
+    {
+        lives = value;
     }
 
     // Listes pour suivre tous les objets du jeu
@@ -130,6 +143,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+      
+
         // Initialisation
         score = 0;
         lives = 3;
@@ -412,8 +427,8 @@ public class GameManager : MonoBehaviour
         lives = 3;
         bulletCount = 1;
         gameTime = 0f;
-        spawnRate = danger.getInitialSpawnRate();
-        nextSpawnTime = Time.time + spawnRate;
+        danger.setSpawnRate(danger.getInitialSpawnRate());
+        danger.setNextSpawnTime(Time.time + danger.getSpawnRate());
 
         // Masquage du panel de game over
         gameOverPanel.SetActive(false);

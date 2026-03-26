@@ -3,12 +3,7 @@ using UnityEngine;
 
 public class BulletCollider : EntityColider
 {
-    private GameManager gameManager;
 
-    void Start()
-    {
-        gameManager = gameManager.getInstance();
-    }
 
     // Utilisons OnCollisionEnter au lieu de OnTriggerEnter
     void OnCollisionEnter(Collision collision)
@@ -17,7 +12,7 @@ public class BulletCollider : EntityColider
         {
             // Balle touche ennemi
             gameManager.HandleBulletEnemyCollision(gameObject, collision.gameObject);
-            gameManager.score += 100;
+            gameManager.setScore(gameManager.getScore() + 100);
 
             // Chance de générer un power-up
             if (Random.value < 0.5f)
@@ -29,7 +24,7 @@ public class BulletCollider : EntityColider
         {
             // Balle touche astéroïde
             gameManager.HandleBulletEnemyCollision(gameObject, collision.gameObject);
-            gameManager.score += 50;
+            gameManager.setScore(gameManager.getScore() + 50);
         }
     }
 
@@ -48,10 +43,10 @@ public class BulletCollider : EntityColider
 
         // Destruction de l'ennemi
         Destroy(enemy, 0.1f); // Court d�lai pour permettre � l'explosion de commencer
-        dangers.Remove(enemy.GetComponent<Dangers>());
+        gameManager.lDangers.Remove(enemy.GetComponent<Dangers>());
 
         // Destruction de la balle
         Destroy(bullet);
-        lBullets.Remove(bullet.GetComponent<Bullets>());
+        gameManager.lBullets.Remove(bullet.GetComponent<Bullets>());
     }
 }

@@ -2,6 +2,17 @@
 
 public abstract class EntityColider : MonoBehaviour
 {
+
+    protected GameManager gameManager;
+
+
+
+    private void Start()
+    {
+        gameManager = gameManager.getInstance();
+    }
+
+
     void SetupCollisionComponents(GameObject obj, bool hasRigidbody, bool isTrigger, string tag)
     {
         // Ajouter ou configurer le collider si n�cessaire
