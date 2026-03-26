@@ -26,7 +26,7 @@ public class PlayerCollider : EntityColider
 
         if (gameManager.getLives() <= 0)
         {
-            GameOver();
+            gameManager.GameOver();
         }
     }
 

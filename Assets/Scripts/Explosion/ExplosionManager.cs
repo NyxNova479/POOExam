@@ -4,16 +4,16 @@ using System.Collections.Generic;
 public class ExplosionManager : MonoBehaviour
 {
     [Header("Explosion Settings")]
-    public float explosionForce = 15f;
-    public float explosionRadius = 5f;
-    public float upwardsModifier = 1f;
-    public float fragmentLifetime = 2.5f;
-    public Vector2 fragmentsRange = new Vector2(5, 8); // Min and max number of fragments
+    private float explosionForce = 15f;
+    private float explosionRadius = 5f;
+    private float upwardsModifier = 1f;
+    private float fragmentLifetime = 2.5f;
+    private Vector2 fragmentsRange = new Vector2(5, 8); // Min and max number of fragments
 
     [Header("Chaos Settings")]
-    public float torqueMultiplier = 200f;
-    public float scaleVariation = 0.3f;
-    public float velocityVariation = 0.5f;
+    private float torqueMultiplier = 200f;
+    private float scaleVariation = 0.3f;
+    private float velocityVariation = 0.5f;
 
     public void ExplodeObject(GameObject objectToExplode)
     {

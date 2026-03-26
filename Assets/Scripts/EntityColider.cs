@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class EntityColider : MonoBehaviour
+public abstract class EntityColider : MonoBehaviour, IColidable
 {
 
     protected GameManager gameManager;
@@ -13,7 +13,7 @@ public abstract class EntityColider : MonoBehaviour
     }
 
 
-    void SetupCollisionComponents(GameObject obj, bool hasRigidbody, bool isTrigger, string tag)
+    public void SetupCollisionComponents(GameObject obj, bool hasRigidbody, bool isTrigger, string tag)
     {
         // Ajouter ou configurer le collider si n�cessaire
         Collider collider = obj.GetComponent<Collider>();
@@ -52,5 +52,10 @@ public abstract class EntityColider : MonoBehaviour
 
         // D�finir le tag
         obj.tag = tag;
+    }
+
+    public void collide(PlayerCollider player)
+    {
+        throw new System.NotImplementedException();
     }
 }

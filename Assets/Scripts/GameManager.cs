@@ -363,7 +363,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void GameOver()
+    public void GameOver()
     {
         // Affichage du panel de game over
         gameOverPanel.SetActive(true);
@@ -375,7 +375,7 @@ public class GameManager : MonoBehaviour
         // Mise � jour initiale du texte de d�compte
         if (countdownText != null)
         {
-            countdownText.text = "Red�marrage dans: " + Mathf.Ceil(restartCountdown).ToString();
+            countdownText.text = "Redémarrage dans: " + Mathf.Ceil(restartCountdown).ToString();
             countdownText.gameObject.SetActive(true);
         }
 
