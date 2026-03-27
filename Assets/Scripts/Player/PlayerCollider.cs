@@ -5,30 +5,7 @@ public class PlayerCollider : EntityColider
 {
 
 
-    public void HandlePlayerHit(GameObject hitObject, GameObject explosionPrefab)
-    {
-        // Destruction de l'objet qui a touch� le joueur
-        Instantiate(explosionPrefab, hitObject.transform.position, Quaternion.identity);
 
-        if (hitObject.CompareTag("Enemy"))
-        {
-            Destroy(hitObject);
-            gameManager.lDangers.Remove(hitObject.GetComponent<Dangers>());
-        }
-        else if (hitObject.CompareTag("Asteroid"))
-        {
-            Destroy(hitObject);
-            gameManager.lDangers.Remove(hitObject.GetComponent<Dangers>());
-        }
-
-        // Perte d'une vie
-        gameManager.setLives(gameManager.getLives() - 1);
-
-        if (gameManager.getLives() <= 0)
-        {
-            gameManager.GameOver();
-        }
-    }
 
     // Utilisons OnCollisionEnter au lieu de OnTriggerEnter
     void OnTriggerEnter(Collider collision)
@@ -43,7 +20,7 @@ public class PlayerCollider : EntityColider
             // Le joueur a collecté un power-up
             gameManager.ApplyPowerUp();
             Destroy(collision.gameObject);
-            gameManager.PowerUps.Remove(collision.gameObject.GetComponent<PowerUp>());
+            collision.GetComponent<PowerUp>().PowerUps.Remove(collision.gameObject.GetComponent<PowerUp>());
         }
     }
 }

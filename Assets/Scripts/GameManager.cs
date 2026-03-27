@@ -13,9 +13,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerShip player;
     [SerializeField] private Bullets bulletScript;
     [SerializeField] private UIManager uiManager;
+    [SerializeField] private Dangers dangerScript;
+    [SerializeField] private PowerUp powerUp;
+    [SerializeField] private GameObject gameOverPanel;
 
-    private Dangers dangerScript;
-    private PowerUp powerUp;
 
 
     private ISpawnable spawnable;
@@ -25,9 +26,6 @@ public class GameManager : MonoBehaviour
     [Header("Explosion")]
     private ExplosionManager explosionManager;
 
-    // Référence directe à tous les objets du jeu
-
-    private GameObject explosionPrefab;
 
 
     // Variables publiques expos�es sans encapsulation
@@ -35,7 +33,6 @@ public class GameManager : MonoBehaviour
     private int lives;
 
     private float gameTime = 0f; // Temps de jeu écoulé
-
 
 
 
@@ -91,12 +88,6 @@ public class GameManager : MonoBehaviour
 
 
 
-    // UI references
-    public TMPro.TMP_Text scoreText;
-    public TMPro.TMP_Text livesText;
-    public GameObject gameOverPanel;
-    public TMPro.TMP_Text powerupMessageText; // Pour afficher les messages de powerup
-    public TMPro.TMP_Text timeText; // Pour afficher le temps �coul�
 
 
     private bool isGameOver = false;
@@ -134,83 +125,18 @@ public class GameManager : MonoBehaviour
         gameTime = 0f;
 
 
-        UpdateUI();
-        if (gameOverPanel) gameOverPanel.SetActive(false);
-        if (powerupMessageText) powerupMessageText.gameObject.SetActive(false);
+
+
 
         // S'assurer que le joueur a les composants n�cessaires pour les collisions
         //SetupCollisionComponents(player.getPrefab(), true, false, "Player");
 
-        // Ajouter le script de gestion de collision au joueur
-        if (player.GetComponent<PlayerCollider>() == null)
-        {
-            player.getPrefab().AddComponent<PlayerCollider>();
-        }
+
     }
 
-    // Nouvelle m�thode pour configurer les composants de collision
-    void SetupCollisionComponents(GameObject obj, bool hasRigidbody, bool isTrigger, string tag)
-    {
-        // Ajouter ou configurer le collider si n�cessaire
-        Collider collider = obj.GetComponent<Collider>();
-        if (collider == null)
-        {
-            // Ajouter un BoxCollider par d�faut
-            collider = obj.AddComponent<BoxCollider>();
 
-            // Ajuster la taille du collider en fonction du tag
-            BoxCollider boxCollider = (BoxCollider)collider;
-            if (tag == "Bullet")
-            {
-                // Collider plus petit pour les balles
-                boxCollider.size = new Vector3(0.3f, 0.3f, 0.5f);
-            }
-            else if (tag == "PowerUp")
-            {
-                // Collider plus grand pour les power-ups pour faciliter leur collecte
-                boxCollider.size = new Vector3(1.2f, 1.2f, 1.2f);
-            }
-        }
 
-        // Configurer le collider comme trigger ou non
-        collider.isTrigger = isTrigger;
 
-        // Ajouter un Rigidbody si n�cessaire
-        if (hasRigidbody && obj.GetComponent<Rigidbody>() == null)
-        {
-            Rigidbody rb = obj.AddComponent<Rigidbody>();
-            rb.useGravity = false; // D�sactiver la gravit� pour un jeu spatial
-            rb.isKinematic = false; // Ne pas rendre kin�matique pour permettre les collisions physiques
-            rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY; // Figer certains axes
-            rb.interpolation = RigidbodyInterpolation.Extrapolate;
-            rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-        }
-
-        // D�finir le tag
-        obj.tag = tag;
-    }
-
-    public void HandleBulletEnemyCollision(GameObject bullet, GameObject enemy)
-    {
-        // Explosion avec effet de fragmentation
-        if (explosionManager != null)
-        {
-            explosionManager.ExplodeObject(enemy);
-        }
-        else
-        {
-            // Fallback vers l'explosion originale
-            Instantiate(explosionPrefab, enemy.transform.position, Quaternion.identity);
-        }
-
-        // Destruction de l'ennemi
-        Destroy(enemy, 0.1f); // Court d�lai pour permettre � l'explosion de commencer
-        dangerScript.lDangers.Remove(enemy.GetComponent<Dangers>());
-
-        // Destruction de la balle
-        Destroy(bullet);
-        bulletScript.lBullets.Remove(bullet.GetComponent<Bullets>());
-    }
 
     void Update()
     {
@@ -288,7 +214,11 @@ public class GameManager : MonoBehaviour
 
     public void SpawnPowerUp(Vector3 position)
     {
-        return;
+        foreach (PowerUp powerUp in powerUp.PowerUps)
+        {
+            spawnable = powerUp;
+            spawnable.beSpawned(this);
+        }
     }
 
     public void ApplyPowerUp()
@@ -300,19 +230,7 @@ public class GameManager : MonoBehaviour
 
 
 
-    void UpdateUI()
-    {
-        // Mise à jour des textes de score et de vies
-        if (scoreText != null)
-        {
-            scoreText.text = "Score: " + score;
-        }
 
-        if (livesText != null)
-        {
-            livesText.text = "Lives: " + lives;
-        }
-    }
 
     public void GameOver()
     {

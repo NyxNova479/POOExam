@@ -11,7 +11,8 @@ public class PlayerShip : Entity, IPlayable
     [SerializeField] private GameObject playerDamageEffect; // Effet visuel quand un ennemi traverse
     [SerializeField] private GameObject playerShip;
 
-    [SerializeField]private IShootable shootable;
+    private IShootable shootable;
+    [SerializeField]private Bullets bullet;
 
 
     public GameObject getPrefab()
@@ -38,6 +39,8 @@ public class PlayerShip : Entity, IPlayable
         playerShip.transform.rotation = rota;
     }
 
+
+
     void Start()
     {
         // Recherche du GameManager dans la scène
@@ -45,6 +48,12 @@ public class PlayerShip : Entity, IPlayable
 
         // Initialisation des variables
         lives = gameManager.getLives();
+
+        // Ajouter le script de gestion de collision au joueur
+        if (this.GetComponent<PlayerCollider>() == null)
+        {
+            this.gameObject.AddComponent<PlayerCollider>();
+        }
     }
 
     void Update()
@@ -90,15 +99,18 @@ public class PlayerShip : Entity, IPlayable
         if (Input.GetKeyDown(KeyCode.Space))
         {
             
-            Shoot(shootable);
+            Shoot();
         }
     }
 
-    private void Shoot(IShootable shootable)
+    private void Shoot()
     {
 
-        
-        shootable.beShot(this);
+        foreach(Bullets bullet in bullet.lBullets)
+        {
+            shootable = bullet;
+            shootable.beShot(this);
+        }
         
         
     }

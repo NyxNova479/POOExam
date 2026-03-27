@@ -2,10 +2,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public abstract class Dangers : Entity, IMovable, ISpawnable
+public class Dangers : Entity, IMovable, ISpawnable
 {
 
-    private GameObject explosionPrefab;
+    [SerializeField] private GameObject explosionPrefab;
     protected float spawnRate = 2.0f;
     protected List<Dangers> dangers = new List<Dangers>();
 
@@ -27,6 +27,11 @@ public abstract class Dangers : Entity, IMovable, ISpawnable
     public float getSpawnRate()
     {
         return spawnRate;
+    }
+
+    public GameObject getExplosionPrefab()
+    {
+        return explosionPrefab;
     }
 
     public void setSpawnRate(float value)
@@ -55,8 +60,14 @@ public abstract class Dangers : Entity, IMovable, ISpawnable
     }
 
 
-    public abstract void Move(List<Dangers> dangers, PlayerShip playerShip);
-    public abstract void Spawn();
+    public virtual void Move(List<Dangers> dangers, PlayerShip playerShip)
+    {
+        return;
+    }
+    public virtual void Spawn()
+    {
+        return;
+    }
 
 
     

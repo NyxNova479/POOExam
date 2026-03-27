@@ -22,6 +22,9 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         gameManager = GameManager.getInstance();
+
+        if (gameOverPanel) gameOverPanel.SetActive(false);
+        if (powerupMessageText) powerupMessageText.gameObject.SetActive(false);
     }
 
     // Update is called once per frame

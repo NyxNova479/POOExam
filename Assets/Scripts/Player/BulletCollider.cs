@@ -26,7 +26,7 @@ public class BulletCollider : EntityColider
         if (collision.gameObject.CompareTag("Enemy"))
         {
             // Balle touche ennemi
-            gameManager.HandleBulletEnemyCollision(gameObject, collision.gameObject);
+            HandleBulletEnemyCollision(gameObject, collision.gameObject, collision.gameObject.GetComponent<Dangers>().getExplosionPrefab());
             gameManager.setScore(gameManager.getScore() + 100);
 
             // Chance de générer un power-up
@@ -38,7 +38,7 @@ public class BulletCollider : EntityColider
         else if (collision.gameObject.CompareTag("Asteroid"))
         {
             // Balle touche astéroïde
-            gameManager.HandleBulletEnemyCollision(gameObject, collision.gameObject);
+            HandleBulletEnemyCollision(gameObject, collision.gameObject,collision.gameObject.GetComponent<Dangers>().getExplosionPrefab());
             gameManager.setScore(gameManager.getScore() + 50);
         }
     }
@@ -58,10 +58,10 @@ public class BulletCollider : EntityColider
 
         // Destruction de l'ennemi
         Destroy(enemy, 0.1f); // Court d�lai pour permettre � l'explosion de commencer
-        gameManager.lDangers.Remove(enemy.GetComponent<Dangers>());
+        enemy.GetComponent<Dangers>().lDangers.Remove(enemy.GetComponent<Dangers>());
 
         // Destruction de la balle
         Destroy(bullet);
-        gameManager.lBullets.Remove(bullet.GetComponent<Bullets>());
+        bullet.GetComponent<Bullets>().lBullets.Remove(bullet.GetComponent<Bullets>());
     }
 }

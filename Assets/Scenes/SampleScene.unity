@@ -6494,8 +6494,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1649622542}
   - component: {fileID: 1649622541}
+  - component: {fileID: 1649622543}
   m_Layer: 0
-  m_Name: BulletManager
+  m_Name: SceneManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6530,6 +6531,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1649622543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1649622540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7bb8e8642e9ef840aefb1451b069da4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionPrefab: {fileID: 6403353413147890401, guid: f9177c7e254ee774498f31c299703063,
+    type: 3}
 --- !u!1 &1670553638
 GameObject:
   m_ObjectHideFlags: 0
@@ -11871,8 +11886,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 4111632860656950457}
-  bullet: {fileID: 1649622541}
+  bulletScript: {fileID: 1649622541}
   uiManager: {fileID: 460473867}
+  dangerScript: {fileID: 1649622543}
+  powerUp: {fileID: 0}
   scoreText: {fileID: 169593459}
   livesText: {fileID: 1207875883}
   gameOverPanel: {fileID: 1993041029}
@@ -12002,6 +12019,7 @@ MonoBehaviour:
     type: 3}
   playerShip: {fileID: 919132149155446097, guid: ed6cc3a85d09df6488323ce9de2b371b,
     type: 3}
+  bullet: {fileID: 1649622541}
 --- !u!65 &4111632860656950461
 BoxCollider:
   m_ObjectHideFlags: 0
