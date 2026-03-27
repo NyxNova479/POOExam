@@ -62,11 +62,11 @@ public class Dangers : Entity, IMovable, ISpawnable
 
     public virtual void Move(List<Dangers> dangers, PlayerShip playerShip)
     {
-        return;
+        Debug.Log("Je bouge");
     }
     public virtual void Spawn()
     {
-        return;
+        Debug.Log("Je spawn");
     }
 
 
@@ -82,12 +82,12 @@ public class Dangers : Entity, IMovable, ISpawnable
     }
 
     
-    public void beMoved(GameManager gameManager)
+    public void beMoved()
     {
         Move(dangers, gameManager.getPlayer());
     }
 
-    public void beSpawned(GameManager gameManager)
+    public void beSpawned()
     {
         Spawn();
     }

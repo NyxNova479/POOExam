@@ -126,6 +126,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9de300951a66224591cb638fff7b384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionPrefab: {fileID: 6403353413147890401, guid: f9177c7e254ee774498f31c299703063,
+    type: 3}
   enemyPrefab: {fileID: 196105707552078345}
   enCollider: {fileID: 3227548157324425412}
 --- !u!114 &3227548157324425412

@@ -2,7 +2,6 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using static Unity.VisualScripting.Metadata;
 using System.Runtime.InteropServices.WindowsRuntime;
 
 public class GameManager : MonoBehaviour
@@ -34,6 +33,10 @@ public class GameManager : MonoBehaviour
 
     private float gameTime = 0f; // Temps de jeu écoulé
 
+    private GameManager()
+    {
+        Instance = this;
+    }
 
 
     public static GameManager getInstance()
@@ -107,29 +110,17 @@ public class GameManager : MonoBehaviour
 
 
 
-    // Méthode pour gérer les collisions avec le joueur
-    public void HandlePlayerHit(GameObject hitObject)
-    {
-        return;
-    }
+
+
 
     void Start()
     {
-      
-
 
         // Initialisation
         score = 0;
         lives = 3;
 
         gameTime = 0f;
-
-
-
-
-
-        // S'assurer que le joueur a les composants n�cessaires pour les collisions
-        //SetupCollisionComponents(player.getPrefab(), true, false, "Player");
 
 
     }
@@ -146,16 +137,15 @@ public class GameManager : MonoBehaviour
             gameTime += Time.deltaTime;
 
 
+            // Génération de nouveaux ennemis/ast�ro�des
+            SpawnEnemiesAndAsteroids();
 
             // Déplacement de tous les objets
             MoveDangers();
             MoveBullets();
 
-            // Nous ne v�rifions plus les collisions manuellement
-            // Les collisions sont maintenant g�r�es par les �v�nements OnTriggerEnter/OnCollisionEnter
 
-            // Génération de nouveaux ennemis/ast�ro�des
-            SpawnEnemiesAndAsteroids();
+
 
 
         }
@@ -183,48 +173,41 @@ public class GameManager : MonoBehaviour
 
     void MoveDangers()
     {
-        foreach (Dangers danger in dangerScript.lDangers)
-        {
 
-            movable = danger;
-            movable.beMoved(this);
-        }
+
+            movable = dangerScript;
+            movable.beMoved();
+        
     }
 
 
     void MoveBullets()
     {
-        foreach(Bullets bullet in bulletScript.lBullets)
-        {
 
-            movable = bullet;
-            movable.beMoved(this);
-        }
+
+            movable = bulletScript;
+            movable.beMoved();
+        
 
     }
 
     void SpawnEnemiesAndAsteroids()
     {
-       foreach(Dangers dangers in dangerScript.lDangers)
-       {
-            spawnable = dangers;
-            spawnable.beSpawned(this);
-       }
+
+            spawnable = dangerScript;
+            spawnable.beSpawned();
+       
     }
 
     public void SpawnPowerUp(Vector3 position)
     {
-        foreach (PowerUp powerUp in powerUp.PowerUps)
-        {
+
             spawnable = powerUp;
-            spawnable.beSpawned(this);
-        }
+            spawnable.beSpawned();
+        
     }
 
-    public void ApplyPowerUp()
-    {
-        return;
-    }
+
 
 
 

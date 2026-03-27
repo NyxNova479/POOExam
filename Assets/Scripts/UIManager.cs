@@ -30,6 +30,7 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         // Affichage du temps de jeu (optionnel)
         if (timeText != null)
         {
@@ -42,7 +43,7 @@ public class UIManager : MonoBehaviour
 
     void UpdateUI()
     {
-        // Mise � jour des textes de score et de vies
+        // Mise à jour des textes de score et de vies
         if (scoreText != null)
         {
             scoreText.text = "Score: " + gameManager.getScore();

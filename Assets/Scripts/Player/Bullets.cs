@@ -8,8 +8,8 @@ public class Bullets : Entity, IMovable, IShootable
 
 
     [SerializeField] private GameObject bulletPrefab;
-    private float bulletSpeed = 10.0f;
     private BulletCollider bulletCollider;
+    private float bulletSpeed = 10.0f;
     private List<Bullets> bullets = new List<Bullets>();
 
 
@@ -36,7 +36,7 @@ public class Bullets : Entity, IMovable, IShootable
         return maxBulletCount;
     }
 
-    public void beMoved(GameManager gameManager)
+    public void beMoved()
     {
         MoveBullets(lBullets);
     }
@@ -90,10 +90,11 @@ public class Bullets : Entity, IMovable, IShootable
 
             // Configuration des composants de collision pour la balle
             // Les projectiles doivent avoir un Rigidbody pour les collisions
-            bulletCollider.SetupCollisionComponents(bullet, true, false);
 
             // Ajouter le script de gestion de collision � la balle
             bullet.AddComponent<BulletCollider>();
+            bulletCollider = bullet.GetComponent<BulletCollider>();
+            bulletCollider.SetupCollisionComponents(bullet, true, false);
 
             bullets.Add(bullet.GetComponent<Bullets>());
         }
@@ -108,6 +109,7 @@ public class Bullets : Entity, IMovable, IShootable
 
     public void beShot(PlayerShip player)
     {
-        FireBullet(player.getTransform());
+
+        FireBullet(player.getPrefab().transform);
     }
 }

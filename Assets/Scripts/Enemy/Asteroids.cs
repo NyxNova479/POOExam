@@ -27,11 +27,12 @@ public class Asteroids : Dangers
                 Vector3 spawnPosition = new Vector3(randomX, 0, 9);
                 GameObject asteroid = Instantiate(asteroidPrefab, spawnPosition, Quaternion.identity);
 
-                // Configuration des composants de collision pour l'ast�ro�de
-                astCollider.SetupCollisionComponents(asteroid, true, false);
-
                 // Ajouter le script de gestion de collision � l'ast�ro�de
                 asteroid.AddComponent<AsteroidCollider>();
+                // Configuration des composants de collision pour l'ast�ro�de
+                astCollider = gameObject.GetComponent<AsteroidCollider>();
+                astCollider.SetupCollisionComponents(asteroid, true, false);
+
 
                 dangers.Add(asteroid.GetComponent<Asteroids>());
             }

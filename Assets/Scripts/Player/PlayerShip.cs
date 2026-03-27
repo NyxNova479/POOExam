@@ -4,15 +4,15 @@ using UnityEngine;
 public class PlayerShip : Entity, IPlayable
 {
 
+    [SerializeField] private GameObject playerDamageEffect; // Effet visuel quand un ennemi traverse
+    [SerializeField] private GameObject playerShip;
+    [SerializeField]private Bullets bullet;
 
     // Variables dupliquées qui créent des dépendances
     private float speed = 5.0f;
     private int lives;
-    [SerializeField] private GameObject playerDamageEffect; // Effet visuel quand un ennemi traverse
-    [SerializeField] private GameObject playerShip;
 
     private IShootable shootable;
-    [SerializeField]private Bullets bullet;
 
 
     public GameObject getPrefab()
@@ -106,11 +106,11 @@ public class PlayerShip : Entity, IPlayable
     private void Shoot()
     {
 
-        foreach(Bullets bullet in bullet.lBullets)
-        {
+
+        
             shootable = bullet;
             shootable.beShot(this);
-        }
+        
         
         
     }

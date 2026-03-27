@@ -32,11 +32,12 @@ public class Enemy : Dangers, IColidable
                 Vector3 spawnPosition = new Vector3(randomX, 0, 9);
                 GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
 
-                // Configuration des composants de collision pour l'ennemi
-                enCollider.SetupCollisionComponents(enemy, true, false);
-
                 // Ajouter le script de gestion de collision � l'ennemi
                 enemy.AddComponent<EnemyCollider>();
+                // Configuration des composants de collision pour l'ennemi
+                enCollider = gameObject.GetComponent<EnemyCollider>();
+                enCollider.SetupCollisionComponents(enemy, true, false);
+
 
                 dangers.Add(enemy.GetComponent<Enemy>());
             }

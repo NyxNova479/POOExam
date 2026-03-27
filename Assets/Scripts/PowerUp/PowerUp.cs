@@ -40,7 +40,7 @@ public class PowerUp : Entity, ISpawnable
         }
     }
 
-    public void beSpawned(GameManager gameManager)
+    public void beSpawned()
     {
         SpawnPowerUp(new Vector3(10,2,0));
     }

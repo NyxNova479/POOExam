@@ -2,6 +2,6 @@ using UnityEngine;
 
 public interface ISpawnable
 {
-    public void beSpawned(GameManager gameManager);
+    public void beSpawned();
 
 }

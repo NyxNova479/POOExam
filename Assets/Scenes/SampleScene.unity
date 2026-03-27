@@ -581,55 +581,6 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
---- !u!1 &460473866
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 460473868}
-  - component: {fileID: 460473867}
-  m_Layer: 0
-  m_Name: UIManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &460473867
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 460473866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24802d0fa82fd5141a4b1d4a233f8c69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scoreText: {fileID: 169593459}
-  livesText: {fileID: 1207875883}
-  gameOverPanel: {fileID: 1993041029}
-  powerupMessageText: {fileID: 889874623}
-  timeText: {fileID: 1527363849}
---- !u!4 &460473868
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 460473866}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 381.73126, y: 118.70589, z: 99.15663}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &466622386
 GameObject:
   m_ObjectHideFlags: 0
@@ -6493,7 +6444,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1649622542}
-  - component: {fileID: 1649622541}
   - component: {fileID: 1649622543}
   m_Layer: 0
   m_Name: SceneManager
@@ -6502,20 +6452,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1649622541
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1649622540}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6836ee2506f85504392f88990ead7bf1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 5389837174213493555, guid: b783cfe89190393439df1653eff12aa8,
-    type: 3}
 --- !u!4 &1649622542
 Transform:
   m_ObjectHideFlags: 0
@@ -11866,6 +11802,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2040990980}
   - component: {fileID: 2040990979}
+  - component: {fileID: 2040990982}
+  - component: {fileID: 2040990981}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -11886,15 +11824,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 4111632860656950457}
-  bulletScript: {fileID: 1649622541}
-  uiManager: {fileID: 460473867}
+  bulletScript: {fileID: 2040990981}
+  uiManager: {fileID: 2040990982}
   dangerScript: {fileID: 1649622543}
   powerUp: {fileID: 0}
-  scoreText: {fileID: 169593459}
-  livesText: {fileID: 1207875883}
   gameOverPanel: {fileID: 1993041029}
-  powerupMessageText: {fileID: 889874623}
-  timeText: {fileID: 1527363849}
   countdownText: {fileID: 1670553640}
 --- !u!4 &2040990980
 Transform:
@@ -11911,6 +11845,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2040990981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2040990978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6836ee2506f85504392f88990ead7bf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 5389837174213493555, guid: b783cfe89190393439df1653eff12aa8,
+    type: 3}
+--- !u!114 &2040990982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2040990978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24802d0fa82fd5141a4b1d4a233f8c69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreText: {fileID: 169593459}
+  livesText: {fileID: 1207875883}
+  gameOverPanel: {fileID: 1993041029}
+  powerupMessageText: {fileID: 889874623}
+  timeText: {fileID: 1527363849}
 --- !u!1 &663836049414597825
 GameObject:
   m_ObjectHideFlags: 0
@@ -11923,6 +11888,7 @@ GameObject:
   - component: {fileID: 4111632860656950456}
   - component: {fileID: 715019784129754687}
   - component: {fileID: 4111632860656950457}
+  - component: {fileID: 4111632860656950463}
   - component: {fileID: 4111632860656950461}
   - component: {fileID: 4111632860656950462}
   m_Layer: 3
@@ -12017,9 +11983,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerDamageEffect: {fileID: 271379617939054569, guid: 034c0839aa3671f4faeddc0abc34eb68,
     type: 3}
-  playerShip: {fileID: 919132149155446097, guid: ed6cc3a85d09df6488323ce9de2b371b,
-    type: 3}
-  bullet: {fileID: 1649622541}
+  playerShip: {fileID: 663836049414597825}
+  bullet: {fileID: 2040990981}
 --- !u!65 &4111632860656950461
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12053,6 +12018,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ac8837db3a261c46bd8e3a05a0fea5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4111632860656950463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 663836049414597825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9259f72603d8dcb40a8951e8bc95ec45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -12065,5 +12042,4 @@ SceneRoots:
   - {fileID: 1566611637}
   - {fileID: 162952577}
   - {fileID: 1649622542}
-  - {fileID: 460473868}
   - {fileID: 1292033169}
