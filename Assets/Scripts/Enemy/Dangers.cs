@@ -6,8 +6,8 @@ public class Dangers : Entity, IMovable,ISpawnable
 {
 
     [SerializeField] protected GameObject explosionPrefab;
-    [SerializeField] private Enemy enemy;
-    [SerializeField] private Asteroids asteroid;
+    //[SerializeField] private Enemy enemy;
+    //[SerializeField] private Asteroids asteroid;
 
     protected float spawnRate = 2.0f;
     protected List<Dangers> dangers = new List<Dangers>();
@@ -72,16 +72,16 @@ public class Dangers : Entity, IMovable,ISpawnable
 
     public virtual void Spawn()
     {
-        if (Time.time > nextSpawnTime)
-        {
-            gameManager.Spawnable = enemy;
-            gameManager.Spawnable.beSpawned();
-        }
-        else if (Time.time <= nextSpawnTime)
-        {
-            gameManager.Spawnable = asteroid;
-            gameManager.Spawnable.beSpawned();
-        }
+        //if (Time.time > nextSpawnTime)
+        //{
+        //    gameManager.Spawnable = enemy;
+        //    gameManager.Spawnable.beSpawned();
+        //}
+        //else if (Time.time <= nextSpawnTime)
+        //{
+        //    gameManager.Spawnable = asteroid;
+        //    gameManager.Spawnable.beSpawned();
+        //}
 
     }
             public void beSpawned()

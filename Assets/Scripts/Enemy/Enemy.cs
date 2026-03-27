@@ -3,17 +3,14 @@ using UnityEngine;
 using System.Collections.Generic;
 
 
-public class Enemy : Dangers, IColidable, ISpawnable
+public class Enemy : Dangers, ISpawnable
 {
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private EnemyCollider enCollider;
 
     private float enemySpeed = 3.0f;
 
-    public void collide(PlayerCollider player)
-    {
-        throw new System.NotImplementedException();
-    }
+
 
     public override void Move(List<Dangers> dangers, PlayerShip player)
     {

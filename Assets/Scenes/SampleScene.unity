@@ -6444,6 +6444,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1649622542}
+  - component: {fileID: 1649622545}
+  - component: {fileID: 1649622544}
   - component: {fileID: 1649622543}
   m_Layer: 0
   m_Name: SceneManager
@@ -6476,11 +6478,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 1649622540}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95d70c412c94a1445b695dd0e10cca60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionPrefab: {fileID: 0}
+  asteroidPrefab: {fileID: 0}
+  astCollider: {fileID: 0}
+--- !u!114 &1649622544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1649622540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9de300951a66224591cb638fff7b384, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionPrefab: {fileID: 0}
+  enemyPrefab: {fileID: 0}
+  enCollider: {fileID: 0}
+--- !u!114 &1649622545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1649622540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7bb8e8642e9ef840aefb1451b069da4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionPrefab: {fileID: 6403353413147890401, guid: f9177c7e254ee774498f31c299703063,
-    type: 3}
+  explosionPrefab: {fileID: 0}
 --- !u!1 &1670553638
 GameObject:
   m_ObjectHideFlags: 0
@@ -11826,7 +11857,7 @@ MonoBehaviour:
   player: {fileID: 4111632860656950457}
   bulletScript: {fileID: 2040990981}
   uiManager: {fileID: 2040990982}
-  dangerScript: {fileID: 1649622543}
+  dangerScript: {fileID: 1649622545}
   powerUp: {fileID: 0}
   gameOverPanel: {fileID: 1993041029}
   countdownText: {fileID: 1670553640}

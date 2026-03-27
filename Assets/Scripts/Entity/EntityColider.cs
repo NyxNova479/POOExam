@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class EntityColider : MonoBehaviour, IColidable
+public abstract class EntityColider : MonoBehaviour
 {
 
     protected GameManager gameManager;
