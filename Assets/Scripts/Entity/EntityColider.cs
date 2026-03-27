@@ -14,28 +14,11 @@ public abstract class EntityColider : MonoBehaviour, IColidable
     }
 
 
-    public void SetupCollisionComponents(GameObject obj, bool hasRigidbody, bool isTrigger, string tag)
+    public virtual void SetupCollisionComponents(GameObject obj, bool hasRigidbody, bool isTrigger)
     {
         // Ajouter ou configurer le collider si n�cessaire
         Collider collider = obj.GetComponent<Collider>();
-        if (collider == null)
-        {
-            // Ajouter un BoxCollider par d�faut
-            collider = obj.AddComponent<BoxCollider>();
 
-            // Ajuster la taille du collider en fonction du tag
-            BoxCollider boxCollider = (BoxCollider)collider;
-            if (tag == "Bullet")
-            {
-                // Collider plus petit pour les balles
-                boxCollider.size = new Vector3(0.3f, 0.3f, 0.5f);
-            }
-            else if (tag == "PowerUp")
-            {
-                // Collider plus grand pour les power-ups pour faciliter leur collecte
-                boxCollider.size = new Vector3(1.2f, 1.2f, 1.2f);
-            }
-        }
 
         // Configurer le collider comme trigger ou non
         collider.isTrigger = isTrigger;

@@ -1,22 +1,26 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
-public class PowerUp : Entity
+public class PowerUp : Entity, ISpawnable
 {
     [SerializeField] private GameObject powerUpPrefab;
     [SerializeField] private PowerUpCollider upCollider;
+    private List<PowerUp> powerUps = new List<PowerUp>();
+
+    public List<PowerUp> PowerUps { get => powerUps; set => powerUps = value; }
 
     public void SpawnPowerUp(Vector3 position)
     {
         GameObject powerUp = Instantiate(powerUpPrefab, position, Quaternion.identity);
 
         // Configuration des composants de collision pour le power-up
-        upCollider.SetupCollisionComponents(powerUp, true, false, "PowerUp");
+        upCollider.SetupCollisionComponents(powerUp, true, false);
 
         // Ajouter le script de gestion de collision au power-up
         powerUp.AddComponent<PowerUpCollider>();
 
-        gameManager.PowerUps.Add(powerUp.GetComponent<PowerUp>());
+        PowerUps.Add(powerUp.GetComponent<PowerUp>());
     }
     public void ApplyPowerUp(Bullets bullet, UIManager uiManager)
     {
@@ -34,5 +38,10 @@ public class PowerUp : Entity
             gameManager.setScore(gameManager.getScore() + 200);
             StartCoroutine(uiManager.ShowPowerupMessage("Max Weapon Level! +200 Score"));
         }
+    }
+
+    public void beSpawned(GameManager gameManager)
+    {
+        SpawnPowerUp(new Vector3(10,2,0));
     }
 }

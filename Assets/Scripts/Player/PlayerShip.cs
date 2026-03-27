@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class PlayerShip : Entity, IPlayable
 {
@@ -10,7 +11,7 @@ public class PlayerShip : Entity, IPlayable
     [SerializeField] private GameObject playerDamageEffect; // Effet visuel quand un ennemi traverse
     [SerializeField] private GameObject playerShip;
 
-    private IShootable shootable;
+    [SerializeField]private IShootable shootable;
 
 
     public GameObject getPrefab()
@@ -50,7 +51,7 @@ public class PlayerShip : Entity, IPlayable
     {
         // Mise à jour des variables depuis le GameManager
         lives = gameManager.getLives();
-        HandlePlayerInput();
+        bePlayed();
     }
 
     void HandlePlayerInput()
@@ -88,9 +89,18 @@ public class PlayerShip : Entity, IPlayable
         // Tir
         if (Input.GetKeyDown(KeyCode.Space))
         {
-
-            shootable.beShot(this);
+            
+            Shoot(shootable);
         }
+    }
+
+    private void Shoot(IShootable shootable)
+    {
+
+        
+        shootable.beShot(this);
+        
+        
     }
 
     public void bePlayed()

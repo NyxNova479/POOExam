@@ -33,12 +33,12 @@ public class Enemy : Dangers, IColidable
                 GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
 
                 // Configuration des composants de collision pour l'ennemi
-                enCollider.SetupCollisionComponents(enemy, true, false, "Enemy");
+                enCollider.SetupCollisionComponents(enemy, true, false);
 
                 // Ajouter le script de gestion de collision � l'ennemi
                 enemy.AddComponent<EnemyCollider>();
 
-                gameManager.lDangers.Add(enemy.GetComponent<Enemy>());
+                dangers.Add(enemy.GetComponent<Enemy>());
             }
 
             nextSpawnTime = Time.time + spawnRate;
@@ -95,5 +95,13 @@ public class Enemy : Dangers, IColidable
             }
         }
         
+    }
+    public void HandlePlayerHit(GameObject hitObject, GameObject explosionPrefab)
+    {
+        // Destruction de l'objet qui a touch� le joueur
+        Instantiate(explosionPrefab, hitObject.transform.position, Quaternion.identity);
+        Destroy(hitObject);
+        lDangers.Remove(hitObject.GetComponent<Dangers>());
+        base.HandlePlayerHit(hitObject);
     }
 }

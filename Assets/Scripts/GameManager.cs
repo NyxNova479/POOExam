@@ -11,10 +11,13 @@ public class GameManager : MonoBehaviour
     private static GameManager Instance;
 
     [SerializeField] private PlayerShip player;
-    [SerializeField] private Bullets bullet;
+    [SerializeField] private Bullets bulletScript;
     [SerializeField] private UIManager uiManager;
 
-    private Dangers danger;
+    private Dangers dangerScript;
+    private PowerUp powerUp;
+
+
     private ISpawnable spawnable;
     private IMovable movable;
     private IShootable shootable;
@@ -79,16 +82,13 @@ public class GameManager : MonoBehaviour
         else if (lives < 0) lives = 0;
     }
 
-    // Listes pour suivre tous les objets du jeu
-    private List<Dangers> dangers = new List<Dangers>();
-    private List<Bullets> bullets = new List<Bullets>();
-    private List<PowerUp> powerUps = new List<PowerUp>();
 
 
 
 
-    // Variables pour le timing
-    private float nextSpawnTime;
+
+
+
 
 
     // UI references
@@ -103,9 +103,9 @@ public class GameManager : MonoBehaviour
     private float restartCountdown = 3.0f;
     public TMPro.TMP_Text countdownText;
 
-    public List<Dangers> lDangers { get => dangers; set => dangers = value; }
-    public List<Bullets> lBullets { get => bullets; set => bullets = value; }
-    public List<PowerUp> PowerUps { get => powerUps; set => powerUps = value; }
+
+
+
 
 
     // Avant de remplacer le système de collisions, il faut créer des classes pour gérer les collisions
@@ -119,27 +119,7 @@ public class GameManager : MonoBehaviour
     // Méthode pour gérer les collisions avec le joueur
     public void HandlePlayerHit(GameObject hitObject)
     {
-        // Destruction de l'objet qui a touché le joueur
-        Instantiate(explosionPrefab, hitObject.transform.position, Quaternion.identity);
-
-        if (hitObject.CompareTag("Enemy"))
-        {
-            Destroy(hitObject);
-            lDangers.Remove(hitObject.GetComponent<Dangers>());
-        }
-        else if (hitObject.CompareTag("Asteroid"))
-        {
-            Destroy(hitObject);
-            lDangers.Remove(hitObject.GetComponent<Dangers>());
-        }
-
-        // Perte d'une vie
-        lives--;
-
-        if (lives <= 0)
-        {
-            GameOver();
-        }
+        return;
     }
 
     void Start()
@@ -225,11 +205,11 @@ public class GameManager : MonoBehaviour
 
         // Destruction de l'ennemi
         Destroy(enemy, 0.1f); // Court d�lai pour permettre � l'explosion de commencer
-        dangers.Remove(enemy.GetComponent<Dangers>());
+        dangerScript.lDangers.Remove(enemy.GetComponent<Dangers>());
 
         // Destruction de la balle
         Destroy(bullet);
-        lBullets.Remove(bullet.GetComponent<Bullets>());
+        bulletScript.lBullets.Remove(bullet.GetComponent<Bullets>());
     }
 
     void Update()
@@ -238,9 +218,6 @@ public class GameManager : MonoBehaviour
         {
             // Augmentation du temps de jeu
             gameTime += Time.deltaTime;
-
-
-
 
 
 
@@ -277,15 +254,12 @@ public class GameManager : MonoBehaviour
     }
 
 
-    void FireBullet()
-    {
-        shootable.beShot(player);
-    }
 
     void MoveDangers()
     {
-        foreach (Dangers danger in dangers)
+        foreach (Dangers danger in dangerScript.lDangers)
         {
+
             movable = danger;
             movable.beMoved(this);
         }
@@ -294,7 +268,7 @@ public class GameManager : MonoBehaviour
 
     void MoveBullets()
     {
-        foreach(Bullets bullet in bullets)
+        foreach(Bullets bullet in bulletScript.lBullets)
         {
 
             movable = bullet;
@@ -305,11 +279,11 @@ public class GameManager : MonoBehaviour
 
     void SpawnEnemiesAndAsteroids()
     {
-        foreach(Dangers danger in dangers)
-        {
-            spawnable = danger;
+       foreach(Dangers dangers in dangerScript.lDangers)
+       {
+            spawnable = dangers;
             spawnable.beSpawned(this);
-        }
+       }
     }
 
     public void SpawnPowerUp(Vector3 position)
@@ -375,37 +349,37 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
 
         // Destruction de tous les objets
-        foreach (Dangers enemy in lDangers)
+        foreach (Dangers enemy in dangerScript.lDangers)
         {
             Destroy(enemy);
         }
-        lDangers.Clear();
+        dangerScript.lDangers.Clear();
 
-        foreach (Dangers asteroid in lDangers)
+        foreach (Dangers asteroid in dangerScript.lDangers)
         {
             Destroy(asteroid);
         }
-        lDangers.Clear();
+        dangerScript.lDangers.Clear();
 
-        foreach (Bullets bullet in lBullets)
+        foreach (Bullets bullet in bulletScript.lBullets)
         {
             Destroy(bullet);
         }
-        lBullets.Clear();
+        bulletScript.lBullets.Clear();
 
-        foreach (Entity powerUp in PowerUps)
+        foreach (Entity powerUp in powerUp.PowerUps)
         {
             Destroy(powerUp);
         }
-        PowerUps.Clear();
+        powerUp.PowerUps.Clear();
 
         // R�initialisation des variables
         score = 0;
         lives = 3;
-        bullet.BulletCount = 1;
+        bulletScript.BulletCount = 1;
         gameTime = 0f;
-        danger.setSpawnRate(danger.getInitialSpawnRate());
-        danger.setNextSpawnTime(Time.time + danger.getSpawnRate());
+        dangerScript.setSpawnRate(dangerScript.getInitialSpawnRate());
+        dangerScript.setNextSpawnTime(Time.time + dangerScript.getSpawnRate());
 
         // Masquage du panel de game over
         gameOverPanel.SetActive(false);

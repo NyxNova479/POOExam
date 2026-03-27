@@ -28,12 +28,12 @@ public class Asteroids : Dangers
                 GameObject asteroid = Instantiate(asteroidPrefab, spawnPosition, Quaternion.identity);
 
                 // Configuration des composants de collision pour l'ast�ro�de
-                astCollider.SetupCollisionComponents(asteroid, true, false, "Asteroid");
+                astCollider.SetupCollisionComponents(asteroid, true, false);
 
                 // Ajouter le script de gestion de collision � l'ast�ro�de
                 asteroid.AddComponent<AsteroidCollider>();
 
-                gameManager.lDangers.Add(asteroid.GetComponent<Asteroids>());
+                dangers.Add(asteroid.GetComponent<Asteroids>());
             }
             nextSpawnTime = Time.time + spawnRate;
         }
@@ -94,5 +94,16 @@ public class Asteroids : Dangers
                 asteroids.RemoveAt(i);
             }
         }
+    }
+    public void HandlePlayerHit(GameObject hitObject, GameObject explosionPrefab)
+    {
+        // Destruction de l'objet qui a touch� le joueur
+        Instantiate(explosionPrefab, hitObject.transform.position, Quaternion.identity);
+        Destroy(hitObject);
+        lDangers.Remove(hitObject.GetComponent<Dangers>());
+        base.HandlePlayerHit(hitObject);
+
+
+        
     }
 }

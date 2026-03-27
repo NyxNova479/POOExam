@@ -3,6 +3,21 @@ using UnityEngine;
 
 public class BulletCollider : EntityColider
 {
+
+    public override void SetupCollisionComponents(GameObject obj, bool hasRigidbody, bool isTrigger)
+    {
+        // Ajouter ou configurer le collider si n�cessaire
+        Collider collider = obj.GetComponent<Collider>();
+        if (tag == "Bullet")
+        {
+            // Ajuster la taille du collider en fonction du tag
+            BoxCollider boxCollider = (BoxCollider)GetComponent<Collider>();
+
+            // Collider plus petit pour les balles
+            boxCollider.size = new Vector3(0.3f, 0.3f, 0.5f);
+        }
+        base.SetupCollisionComponents(obj, hasRigidbody, isTrigger);
+    }
     
 
     // Utilisons OnCollisionEnter au lieu de OnTriggerEnter

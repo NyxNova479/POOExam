@@ -7,7 +7,7 @@ public abstract class Dangers : Entity, IMovable, ISpawnable
 
     private GameObject explosionPrefab;
     protected float spawnRate = 2.0f;
-
+    protected List<Dangers> dangers = new List<Dangers>();
 
     [Header("Difficulty Settings")]
     protected float initialSpawnRate = 2.0f; // Taux de spawn initial
@@ -17,6 +17,7 @@ public abstract class Dangers : Entity, IMovable, ISpawnable
     // Variables pour le timing
     protected float nextSpawnTime;
 
+    public List<Dangers> lDangers { get => dangers; set => dangers = value; }
 
     public float getInitialSpawnRate()
     {
@@ -72,7 +73,7 @@ public abstract class Dangers : Entity, IMovable, ISpawnable
     
     public void beMoved(GameManager gameManager)
     {
-        Move(gameManager.lDangers, gameManager.getPlayer());
+        Move(dangers, gameManager.getPlayer());
     }
 
     public void beSpawned(GameManager gameManager)
@@ -80,7 +81,7 @@ public abstract class Dangers : Entity, IMovable, ISpawnable
         Spawn();
     }
     // Méthode pour gérer les collisions avec le joueur
-    public void HandlePlayerHit(GameObject hitObject)
+    public virtual void HandlePlayerHit(GameObject hitObject)
     {
         // Destruction de l'objet qui a touché le joueur
         Instantiate(explosionPrefab, hitObject.transform.position, Quaternion.identity);
@@ -88,12 +89,12 @@ public abstract class Dangers : Entity, IMovable, ISpawnable
         if (hitObject.CompareTag("Enemy"))
         {
             Destroy(hitObject);
-            gameManager.lDangers.Remove(hitObject.GetComponent<Dangers>());
+            dangers.Remove(hitObject.GetComponent<Dangers>());
         }
         else if (hitObject.CompareTag("Asteroid"))
         {
             Destroy(hitObject);
-            gameManager.lDangers.Remove(hitObject.GetComponent<Dangers>());
+            dangers.Remove(hitObject.GetComponent<Dangers>());
         }
 
         // Perte d'une vie

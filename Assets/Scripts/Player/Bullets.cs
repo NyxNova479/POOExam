@@ -9,8 +9,8 @@ public class Bullets : Entity, IMovable, IShootable
 
     [SerializeField] private GameObject bulletPrefab;
     private float bulletSpeed = 10.0f;
-
     private BulletCollider bulletCollider;
+    private List<Bullets> bullets = new List<Bullets>();
 
 
     // Nouvelles variables pour les fonctionnalit�s demand�es
@@ -29,6 +29,8 @@ public class Bullets : Entity, IMovable, IShootable
         }
     }
 
+    public List<Bullets> lBullets { get => bullets; set => bullets = value; }
+
     public int getMaxBulletCount()
     {
         return maxBulletCount;
@@ -36,7 +38,7 @@ public class Bullets : Entity, IMovable, IShootable
 
     public void beMoved(GameManager gameManager)
     {
-        MoveBullets(gameManager.lBullets);
+        MoveBullets(lBullets);
     }
     void MoveBullets(List<Bullets> bullets)
     {
@@ -88,12 +90,12 @@ public class Bullets : Entity, IMovable, IShootable
 
             // Configuration des composants de collision pour la balle
             // Les projectiles doivent avoir un Rigidbody pour les collisions
-            bulletCollider.SetupCollisionComponents(bullet, true, false, "Bullet");
+            bulletCollider.SetupCollisionComponents(bullet, true, false);
 
             // Ajouter le script de gestion de collision � la balle
             bullet.AddComponent<BulletCollider>();
 
-            gameManager.lBullets.Add(bullet.GetComponent<Bullets>());
+            bullets.Add(bullet.GetComponent<Bullets>());
         }
 
         // Son de tir
