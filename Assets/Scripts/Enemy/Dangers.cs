@@ -2,10 +2,13 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Dangers : Entity, IMovable, ISpawnable
+public class Dangers : Entity, IMovable,ISpawnable
 {
 
-    [SerializeField] private GameObject explosionPrefab;
+    [SerializeField] protected GameObject explosionPrefab;
+    [SerializeField] private Enemy enemy;
+    [SerializeField] private Asteroids asteroid;
+
     protected float spawnRate = 2.0f;
     protected List<Dangers> dangers = new List<Dangers>();
 
@@ -16,6 +19,8 @@ public class Dangers : Entity, IMovable, ISpawnable
 
     // Variables pour le timing
     protected float nextSpawnTime;
+
+    private ISpawnable spawnable;
 
     public List<Dangers> lDangers { get => dangers; set => dangers = value; }
 
@@ -64,13 +69,27 @@ public class Dangers : Entity, IMovable, ISpawnable
     {
         Debug.Log("Je bouge");
     }
+
     public virtual void Spawn()
     {
-        Debug.Log("Je spawn");
+        if (Time.time > nextSpawnTime)
+        {
+            gameManager.Spawnable = enemy;
+            gameManager.Spawnable.beSpawned();
+        }
+        else if (Time.time <= nextSpawnTime)
+        {
+            gameManager.Spawnable = asteroid;
+            gameManager.Spawnable.beSpawned();
+        }
+
     }
+            public void beSpawned()
+            {
+                Spawn();
+            }
 
 
-    
     // Utilisons OnCollisionEnter au lieu de OnTriggerEnter
     void OnTriggerEnter(Collider collision)
     {
@@ -87,26 +106,12 @@ public class Dangers : Entity, IMovable, ISpawnable
         Move(dangers, gameManager.getPlayer());
     }
 
-    public void beSpawned()
-    {
-        Spawn();
-    }
+
     // Méthode pour gérer les collisions avec le joueur
     public virtual void HandlePlayerHit(GameObject hitObject)
     {
         // Destruction de l'objet qui a touché le joueur
         Instantiate(explosionPrefab, hitObject.transform.position, Quaternion.identity);
-
-        if (hitObject.CompareTag("Enemy"))
-        {
-            Destroy(hitObject);
-            dangers.Remove(hitObject.GetComponent<Dangers>());
-        }
-        else if (hitObject.CompareTag("Asteroid"))
-        {
-            Destroy(hitObject);
-            dangers.Remove(hitObject.GetComponent<Dangers>());
-        }
 
         // Perte d'une vie
         gameManager.setLives(gameManager.getLives() - 1);

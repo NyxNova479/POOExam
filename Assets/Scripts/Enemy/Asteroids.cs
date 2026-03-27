@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Asteroids : Dangers
+public class Asteroids : Dangers, ISpawnable
 {
     [SerializeField] private GameObject asteroidPrefab;
     [SerializeField] private AsteroidCollider astCollider;
@@ -16,8 +16,7 @@ public class Asteroids : Dangers
 
     public override void Spawn()
     {
-        if (Time.time > nextSpawnTime)
-        {
+
 
             if (Random.value >= 0.3f)
             {
@@ -37,8 +36,9 @@ public class Asteroids : Dangers
                 dangers.Add(asteroid.GetComponent<Asteroids>());
             }
             nextSpawnTime = Time.time + spawnRate;
-        }
+        
     }
+
 
     protected void MoveAsteroids(List<Dangers> asteroids, PlayerShip player)
     {

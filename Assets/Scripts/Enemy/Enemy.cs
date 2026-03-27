@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 
-public class Enemy : Dangers, IColidable
+public class Enemy : Dangers, IColidable, ISpawnable
 {
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private EnemyCollider enCollider;
@@ -22,8 +22,7 @@ public class Enemy : Dangers, IColidable
 
     public override void Spawn()
     {
-        if (Time.time > nextSpawnTime)
-        {
+
             if (Random.value < 0.3f)
             {
                 // Spawn d'un ennemi
@@ -43,9 +42,10 @@ public class Enemy : Dangers, IColidable
             }
 
             nextSpawnTime = Time.time + spawnRate;
-        }
+        
 
     }
+
 
     protected void MoveEnemies(List<Dangers> enemies, PlayerShip player)
     {

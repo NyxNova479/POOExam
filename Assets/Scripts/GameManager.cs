@@ -71,6 +71,8 @@ public class GameManager : MonoBehaviour
         return lives;
     }
 
+
+
     public void setScore(int value)
     {
         score = value;
@@ -93,9 +95,13 @@ public class GameManager : MonoBehaviour
 
 
 
+
     private bool isGameOver = false;
     private float restartCountdown = 3.0f;
     public TMPro.TMP_Text countdownText;
+
+    public ISpawnable Spawnable { get => spawnable; set => spawnable = value; }
+    public IMovable Movable { get => movable; set => movable = value; }
 
 
 
@@ -175,8 +181,8 @@ public class GameManager : MonoBehaviour
     {
 
 
-            movable = dangerScript;
-            movable.beMoved();
+            Movable = dangerScript;
+            Movable.beMoved();
         
     }
 
@@ -185,8 +191,8 @@ public class GameManager : MonoBehaviour
     {
 
 
-            movable = bulletScript;
-            movable.beMoved();
+            Movable = bulletScript;
+            Movable.beMoved();
         
 
     }
@@ -194,16 +200,16 @@ public class GameManager : MonoBehaviour
     void SpawnEnemiesAndAsteroids()
     {
 
-            spawnable = dangerScript;
-            spawnable.beSpawned();
+            Spawnable = dangerScript;
+            Spawnable.beSpawned();
        
     }
 
     public void SpawnPowerUp(Vector3 position)
     {
 
-            spawnable = powerUp;
-            spawnable.beSpawned();
+            Spawnable = powerUp;
+            Spawnable.beSpawned();
         
     }
 
@@ -268,7 +274,7 @@ public class GameManager : MonoBehaviour
         }
         bulletScript.lBullets.Clear();
 
-        foreach (Entity powerUp in powerUp.PowerUps)
+        foreach (PowerUp powerUp in powerUp.PowerUps)
         {
             Destroy(powerUp);
         }
